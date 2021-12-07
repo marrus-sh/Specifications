@@ -1,0 +1,605 @@
+; Generated from the Markdown source of Kixt Charset.
+
+; <#prod.CharsetDefinition>:
+CharsetDefinition =
+	[%xFEFF] CharsetDeclaration *(
+		BlockDeclaration
+		/ ScriptDeclaration
+		/ CharacterDefinition
+		/ Comment
+		/ Blank
+	)
+
+; <#prod.break>:
+Break = %x2028
+	; A Unicode line separator
+	; This is effectively just a placeholder for whatever manner of linebreak a document happens to use; see spec description
+
+; <#prod.Space>:
+Space = %x20
+	; An ordinary Unicode breaking space
+Blank = *Space Break
+	; A line consisting only of whitespace
+
+; <#prod.ECMA6Char>:
+ECMA6Char = %x21-22 / %x25-3F / %x41-5A / %x5F / %x61-7A
+	; The invariant printing characters from ECMA-6 (also ISO/IEC 646); documents written using only these characters (plus some manner of ASCII linebreak as described above) will be comprehensible in any ECMA-6 character set
+	; The core Kixt Character Definition syntax (with the exception of linebreaks) only uses characters from this set
+
+; <#prod.ASCIIChar>:
+ASCIIChar = %x21-7E
+	; Non-control, non-space ASCII characters
+
+; <#prod.UCSChar>:
+UCSChar =
+	%xA0-D7FF / %xF900-FDCF / %xFDF0-FFEF
+		; Basic Multilingual Plane
+		; (minus surrogates and specials)
+	/ %x10000-1FFFD
+		; Supplementary Multilingual Plane
+	/ %x20000-2FFFD
+		; Supplementary Ideographic Plane
+	/ %x30000-3FFFD
+		; Tertiary Ideographic Plane
+	/ %x40000-4FFFD
+		; Plane 4
+	/ %x50000-5FFFD
+		; Plane 5
+	/ %x60000-6FFFD
+		; Plane 6
+	/ %x70000-7FFFD
+		; Plane 7
+	/ %x80000-8FFFD
+		; Plane 8
+	/ %x90000-9FFFD
+		; Plane 9
+	/ %xA0000-AFFFD
+		; Plane 10
+	/ %xB0000-BFFFD
+		; Plane 11
+	/ %xC0000-CFFFD
+		; Plane 12
+	/ %xD0000-DFFFD
+		; Plane 13
+	/ %xE1000-EFFFD
+		; Supplementary Special-purpose Plane
+		; Note the first 1000 characters are excluded
+	; Non-special, non-privateuse, non-ASCII characters
+	; This is the same definition as used for IRIs
+
+; <#prod.PrivateUse>:
+PrivateUse = %xE000-F8FF / %xF0000-FFFFD / %x100000-10FFFD
+	; Unicode private-use characters
+
+; <#prod.NoSlash>:
+NoSlash = %x20-2E %x30-7E / UCSChar / PrivateUse
+
+; <#prod.NoSpace>:
+NoSpace = ASCIIChar / UCSChar / PrivateUse
+
+; <#prod.NoBreak>:
+NoBreak = NoSpace / Space
+
+; <#prod.AnyChar>:
+AnyChar = NoBreak / Break
+
+; <#prod.Zero>:
+Zero = %x30
+
+; <#prod.One>:
+One = %x31
+
+; <#prod.Bit>:
+Bit = Zero / One
+
+; <#prod.NonZero>:
+NonZero = %x31-39
+
+; <#prod.Decimal>:
+Decimal = %x30-39
+
+; <#prod.NonZeroHex>:
+NonZeroHex = %x31-39 / %x41-46
+
+; <#prod.UpperHex>:
+UpperHex = %x30-39 / %x41-46
+
+; <#prod.Hex>:
+Hex = %x30-39 / %x41-46 / %x61-66
+	; Case-insensitive hexadecimal used by IRI syntax
+
+; <#prod.UpperAlpha>:
+UpperAlpha = %x41-5A
+
+; <#prod.Alpha>:
+Alpha = %x41-5A / %x61-7A
+
+; <#prod.IRI>:
+IRI =
+	URI-scheme %x3A IRI-hier-part
+	[%x3F IRI-query]
+	[%x23 IRI-fragment]
+
+; <#prod.IRI-hier-part>:
+IRI-hier-part =
+	%x2F.2F IRI-authority IRI-path-abempty
+	/ IRI-path-absolute
+	/ IRI-path-rootless
+	/ IRI-path-empty
+
+; <#prod.IRI-authority>:
+IRI-authority =
+	[IRI-userinfo %x40]
+	IRI-host
+	[%x3A URI-port]
+
+; <#prod.IRI-userinfo>:
+IRI-userinfo =
+	*(
+		IRI-unreserved
+		/ URI-pct-encoded
+		/ URI-sub-delims
+		/ %x3A
+	)
+
+; <#prod.IRI-host>:
+IRI-host =
+	URI-IP-literal
+	/ URI-IPv4address
+	/ IRI-reg-name
+
+; <#prod.IRI-reg-name>:
+IRI-reg-name =
+	*(
+		IRI-unreserved
+		/ URI-pct-encoded
+		/ URI-sub-delims
+	)
+
+; <#prod.IRI-abempty>:
+IRI-path-abempty = *(%x2F IRI-segment)
+
+; <#prod.IRI-path-absolute>:
+IRI-path-absolute =
+	%x2F [
+		IRI-segment-nz
+		*(%x2F IRI-segment)
+	]
+
+; <#prod.IRI-path-rootless>:
+IRI-path-rootless = IRI-segment-nz *(%x2F IRI-segment)
+
+; <#prod.IRI-path-empty>:
+IRI-path-empty = 0IRI-pchar
+
+; <#prod.IRI-segment>:
+IRI-segment = *IRI-pchar
+
+; <#prod.IRI-segment-nz>:
+IRI-segment-nz = 1*IRI-pchar
+
+; <#prod.IRI-pchar>:
+IRI-pchar =
+	IRI-unreserved
+	/ URI-pct-encoded
+	/ URI-sub-delims
+	/ %x3A-40
+
+; <#prod.IRI-query>:
+IRI-query = *(IRI-pchar / Privateuse / %x2F / %x3F)
+
+; <#prod.IRI-fragment>:
+IRI-fragment = *(IRI-pchar / %x2F / %x3F)
+
+; <#prod.IRI-unreserved>:
+IRI-unreserved =
+	Alpha / Decimal / %x2D-2E / %x5F / %x7E
+	/ UCSChar
+
+; <#prod.URI-scheme>:
+URI-scheme = Alpha *(Alpha / Decimal / %x2B / %x2D-2E)
+
+; <#prod.URI-port>:
+URI-port = *Decimal
+
+; <#prod.URI-IP-literal>:
+URI-IP-literal =
+	%x5B (
+		URI-IPv6address
+		/ URI-IPvFuture
+	) %x5D
+
+; <#prod.URI-IPvFuture>:
+URI-IPvFuture =
+	(%x56 / %x76) 1*Hex %x2E
+	1*(URI-unreserved / URI-sub-delims / %x5B)
+
+; <#prod.URI-IPv6address>:
+URI-IPv6address =
+	6(URI-h16 %x3A) URI-ls32
+	/ %x3A.3A
+		5(URI-h16 %x3A) URI-ls32
+	/ [URI-h16] %x3A.3A
+		4(URI-h16 %x3A) URI-ls32
+	/ [*1(URI-h16 %x3A) URI-h16] %x3A.3A
+		3(URI-h16 %x3A) URI-ls32
+	/ [*2(URI-h16 %x3A) URI-h16] %x3A.3A
+		2(URI-h16 %x3A) URI-ls32
+	/ [*3(URI-h16 %x3A) URI-h16] %x3A.3A
+		URI-h16 %x3A URI-ls32
+	/ [*4(URI-h16 %x3A) URI-h16] %x3A.3A
+		URI-ls32
+	/ [*5(URI-h16 %x3A) URI-h16] %x3A.3A
+		URI-h16
+	/ [*6(URI-h16 %x3A) URI-h16] %x3A.3A
+
+; <#prod.URI-h16>:
+URI-h16 = 1*4Hex
+	; 16 bits of address represented in hexadecimal
+
+; <#prod.URI-ls32>:
+URI-ls32 = (URI-h16 %x3A URI-h16) / IPv4address
+	; Least significant 32 bits of address
+
+; <#prod.URI-IPv4address>:
+URI-IPv4address =
+	URI-dec-octet
+	%x2E URI-dec-octet
+	%x2E URI-dec-octet
+	%x2E URI-dec-octet
+
+; <#prod.URI-dec-octet>:
+URI-dec-octet =
+	%x32 %x35 %x30-35
+		; 250--255
+	/ %x32 %x30-34 Decimal
+		; 200--249
+	/ One 2Decimal
+		; 100--199
+	/ NonZero Decimal
+		; 10--99
+	/ Decimal
+		; 0--9
+
+; <#prod.URI-pct-encoded>:
+URI-pct-encoded = %x25 Hex Hex
+
+; <#prod.URI-unreserved>:
+URI-unreserved = Alpha / Decimal / %x2D-2E / %x5F / %x7E
+
+; <#prod.URI-sub-delims>:
+URI-sub-delims = %x21 / %x24 / %x26-2C / %x3B / %x3D
+
+; <#prod.NonEmptyString>:
+NonEmptyString = NoSpace *([Space] NoSpace)
+
+; <#prod.String>:
+String = [NonEmptyString]
+	; May be empty
+
+; <#prod.CommentString>:
+CommentString = [NoSpace [*NoBreak NoSpace]]
+	; May be empty
+
+; <#prod.NameSpaceSequence>:
+NameSpaceSequence =
+	Space (
+		UpperAlpha
+			; A letter
+		/ (%x2D (UpperAlpha / Decimal))
+			; A hyphen followed by a letter or digit
+	)
+		; Rules for including a space in a name
+
+; <#prod.NameHyphenSequence>:
+NameHyphenSequence =
+	%x2D (
+		UpperAlpha
+			; A letter
+		/ Decimal
+			; A digit
+		/ NameSpaceSequence
+			; A space (and then some) as defined above
+	)
+		; Rules for including a hyphen
+
+; <#prod.Name>:
+Name =
+	UpperAlpha *(
+		UpperAlpha
+		/ Decimal
+		/ NameSpaceSequence
+		/ NameHyphenSequence
+	)
+		; Valid character, block, and script names
+
+; <#prod.UnicodeCodepoint>:
+UnicodeCodepoint =
+	%x55 %x2B
+	(
+		*Zero (One Zero / NonZeroHex) *4UpperHex
+			; Any nonzero value
+		/ 1*Zero
+			; Zero
+	)
+
+; <#prod.BinaryCodepoint>:
+BinaryCodepoint =
+	*(Zero [Space]) One *15([Space] Bit)
+	/ Zero *([Space] Zero)
+
+; <#prod.Integer>:
+Integer =
+	Zero
+	/ NonZeroHex *3UpperHex
+
+; <#prod.SingleLineComment>:
+SingleLineComment =
+	*Space %x2F
+	*Space CommentString
+	*Space Break
+
+; <#prod.InnerCommentLine>:
+InnerCommentLine =
+	(
+		NoSlash
+		/ %x2F NoSlash
+		/ %x2F.2F NoSlash
+		/ %x2F.2F.2F NoBreak
+	)  *NoBreak Break
+
+; <#prod.MultiLineComment>:
+MultiLineComment =
+	%x2E.2E.2E Break
+	*InnerCommentLine
+	%x2F.2F.2F Break
+
+; <#prod.Comment>:
+Comment =
+	SingleLineComment
+	/ MultiLineComment
+
+; <#prod.Alias>:
+Alias =
+	*Space %x3D
+	*Space Name
+	*Space Break
+	*SingleLineComment
+
+; <#prod.Aliases>:
+Aliases = 1*Alias
+
+; <#prod.OtherName>:
+OtherName =
+	*Space %x2D
+	*Space NonEmptyString
+	*Space Break
+	*SingleLineComment
+
+; <#prod.OtherNames>:
+OtherNames = 1*OtherName
+
+; <#prod.Note>:
+Note =
+	*Space %x2A
+	*Space NonEmptyString
+	*Space Break
+	*SingleLineComment
+
+; <#prod.Notes>:
+Notes = 1*Note
+
+; <#prod.CharsetDeclaration>:
+CharsetDeclaration =
+	CharsetIdentifier
+	CharsetProperties
+	[OtherNames]
+	[Notes]
+
+; <#prod.CharsetInfo>:
+CharsetIdentifier =
+	%x3B.43.48.41.52.53.45.54.3C
+		; `;CHARSET<`
+	IRI %x3E [
+		Integer
+		[%x2E Integer]
+	] *Space Break
+	*SingleLineComment
+
+; <#prod.Variable>:
+Variable = %x56.41.52.49.41.42.4C.45
+	; `VARIABLE`
+
+; <#prod.CharsetProperties>:
+CharsetProperties =
+	[
+		*Space %x26
+		*Space Variable
+		*Space Break
+		*SingleLineComment
+	]
+
+; <#prod.BlockDeclaration>:
+BlockDeclaration =
+	BlockName
+	[Aliases]
+	[OtherNames]
+	[Notes]
+
+; <#prod.BlockName>:
+BlockName =
+	*Space %x25
+	*Space Name
+	*Space Break
+	*SingleLineComment
+
+; <#prod.ScriptDeclaration>:
+ScriptDeclaration =
+	ScriptIdentifier
+	[OtherNames]
+	[Notes]
+
+; <#prod.ScriptIdentifier>:
+ScriptIdentifier =
+	*Space %x27
+	*Space %x3C IRI %x3E
+	*Space Break
+	*SingleLineComment
+
+; <#prod.CharacterDefinition>:
+CharacterDefinition =
+	UnicodeMapping
+	CharacterInfo
+	CompatibilityMapping
+	DecompositionMapping
+	AdditionalProperties
+	[Aliases]
+	[OtherNames]
+	[Notes]
+	[References]
+	[Glyphs]
+
+; <#prod.Unicode>:
+Unicode =
+	*Space UnicodeCodepoint
+	[1*Space CommentString]
+	*Space Break
+	*SingleLineComment
+
+; <#prod.UnicodeMapping>:
+UnicodeMapping = 1*Unicode
+
+; <#prod.BasicType>:
+BasicType =
+	%x43.4F.4E.54.52.4F.4C
+		; `CONTROL`
+	/ %x4D.45.53.53.41.47.49.4E.47
+		; `MESSAGING`
+	/ %x46.4F.52.4D.41.54
+		; `FORMAT`
+	/ %x44.41.54.41
+		; `DATA`
+	/ %x4E.4F.4E.53.50.41.43.49.4E.47
+		; `NONSPACING`
+	/ %x53.50.41.43.49.4E.47
+		; `SPACING`
+	/ %x50.52.49.56.41.54.45.55.53.45
+		; `PRIVATEUSE`
+	/ %x4E.4F.4E.43.48.41.52.41.43.54.45.52
+		; `NONCHARACTER`
+	; It is not possible to define an `UNASSIGNED` character
+
+; <#prod.CharacterInfo>:
+CharacterInfo =
+	*Space %x3B
+	*Space (BinaryCodepoint *Space %x2F / Codepoint Space)
+	*Space Name
+	*Space %x28 BasicType %x29
+	*Space Break
+	*SingleLineComment
+
+; <#prod.CompatibilityMapping>:
+CompatibilityMapping =
+	[
+		*Space %x28
+		*Space [%x3C IRI %x3E]
+		*Space Codepoint
+		*(1*Space Codepoint)
+		*Space Break
+		*SingleLineComment
+	]
+
+; <#prod.DecompositionMapping>:
+DecompositionMapping =
+	[
+		(
+			*Space %x3C
+			*Space Codepoint
+			*(1*Space Codepoint)
+			*Space Break
+		) / (
+			*Space %x3C.3C
+			*Space Codepoint
+			1*(1*Space Codepoint)
+			*Space Break
+		)
+		*SingleLineComment
+	]
+
+; <#prod.Deprecated>:
+Deprecated = %x44.45.50.52.45.43.41.54.45.44
+	; `DEPRECATED`
+
+; <#prod.CharacterWidth>:
+CharacterWidth =
+	%x50.52.4F.50.4F.52.54.49.4F.4E.41.4C
+		; `PROPORTIONAL`
+	/ %x46.55.4C.4C.57.49.44.54.48
+		; `FULLWIDTH`
+
+; <#prod.SegmentationClass>:
+SegmentationClass =
+	%x45.58.54.45.4E.44.53
+		; `EXTENDS`
+	/ %x44.49.56.49.44.45.53
+		; `DIVIDER`
+
+; <#prod.ConjoiningType>:
+ConjoiningMode =
+	%x43.4F.4E.4A.4F.49.4E.53.3C
+		; `CONJOINS<`
+	IRI %x3E
+
+; <#prod.Conjoins>:
+Conjoins = ConjoiningMode [Integer]
+
+; <#prod.Combines>:
+Combines = SegmentationClass [%x2B Integer]
+
+; <#prod.AdditionalProperties>:
+AdditionalProperties =
+	[
+		*Space %x26
+		*Space (
+			Deprecated [
+				1*Space (
+					CharacterWidth [
+						1*Space ConjoiningMode
+					]
+					/ Conjoins
+					/ Combines
+				)
+			]
+			/ CharacterWidth [
+				1*Space ConjoiningMode
+			]
+			/ Conjoins
+			/ Combines
+		)
+		*Space Break
+		*SingleLineComment
+	]
+
+; <#prod.Reference>:
+Reference =
+	*Space %x3E
+	*Space Codepoint
+	[1*Space CommentString]
+	*Space Break
+	*SingleLineComment
+
+; <#prod.References>:
+References = 1*Reference
+
+; <#prod.HexGlyph>:
+HexGlyph = 8*UpperHex
+
+; <#prod.Glyph>:
+Glyph =
+	*Space %x29
+	*Space HexGlyph
+	*Space Break
+	*SingleLineComment
+
+; <#prod.Glyphs>:
+Glyphs = 1*Glyph
