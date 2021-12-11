@@ -1,3 +1,5 @@
+[CC BY-SA 4.0]: <https://creativecommons.org/licenses/by-sa/4.0/> "Creative Commons Attribution-ShareAlike 4.0 International"
+
 [RFC2119]: <https://tools.ietf.org/html/rfc2119> "Key words for use in RFCs to Indicate Requirement Levels"
 [RFC3987]: <https://tools.ietf.org/html/rfc3987> "Internationalized Resource Identifiers (IRIs)"
 [ABNF]: <https://tools.ietf.org/html/rfc5234> "Augmented BNF for Syntax Specifications: ABNF"
@@ -127,8 +129,11 @@
 [`xsd:unsignedByte`]: <https://www.w3.org/TR/xmlschema11-2/#unsignedByte>
 [`xsd:positiveInteger`]: <https://www.w3.org/TR/xmlschema11-2/#positiveInteger>
 
-[Kixt Overview]: <{{ "/" | absolute_url }}> "Kixt Overview"
-[Kixt]: <{{ "/#dfn.Kixt" }}>
+[kibigo!]: <https://go.KIBI.family/About/#me> "kibigo!"
+
+[Kibi Specifications]: <{{ "/" | absolute_url }}> "Kibi Specifications"
+[Kibi Specifications GitHub]: <https://github.com∕marrus-sh/Specifications> "github:marrus-sh/Specifications"
+[Kixt]: <{{ "/#dfn.Kixt" | absolute_url }}>
 
 [Kixt Ontology]: <https://vocab.KIBI.family/Kixt/#> "Kixt Ontology"
 
