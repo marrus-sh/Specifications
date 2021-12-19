@@ -1,0 +1,147 @@
+;CHARSET<https://spec.go.kibi.family/-/kixt-transmissions/charset>1.0
+&VARIABLE
+- Kixt Transmission Charset
+* This character set includes many of the format and data characters provided by ASCII. It is a lowest common denominator set for use in transmissions and document storage.
+
+% ASCII CONTROLS AND BASIC LATIN
+' <https://www.w3.org/ns/i18n#zyyy>
+- Common characters
+* These characters do not belong to any particular script
+
+U+00
+; 00 NULL (FORMAT)
+= NUL
+* This is a meaningless format character which can be used for byte-padding when encoding texts
+> 16 IDLE
+> 7F NOTHING
+) 030A2DB458E0838000
+
+U+01
+; 01 HEAD (CONTROL)
+= START OF HEADING
+= SOH
+* This is a transmission character
+) 018C1AD45AA8E28000
+
+U+02
+; 02 BEGIN (CONTROL)
+= START OF TEXT
+= STX
+* This is a transmission character
+) 018C1FC82A90428000
+
+U+03
+; 03 FINISH (CONTROL)
+= END OF TEXT
+= ETX
+* This is a transmission character
+) 038C27E82A90428000
+
+U+04
+; 04 DONE (CONTROL)
+= END OF TRANSMISSION
+= EOT
+* This is a transmission character
+) 038C22F45E90410000
+
+/ Missing: 05..0D
+
+U+0E
+; 0E LEAVE (DATA)
+= SHIFT OUT
+= LOCKING-SHIFT ONE
+= SO
+* Not suitable for text contents
+> 0F RETURN
+) 018C18C00300085142
+
+U+0F
+; 0F RETURN (DATA)
+= SHIFT IN
+= LOCKING-SHIFT ZERO
+= SI
+* Not suitable for text contents
+> 0E LEAVE
+) 018C18C003001C2087
+
+/ Missing: 10..15
+
+U+16
+; 16 IDLE (CONTROL)
+= SYNCHRONOUS IDLE
+= SYN
+* This is a meaningless transmission character for padding a stream
+* Use 00 for padding characters in storage
+> 00 NULL
+> 7F NOTHING
+) 018C1DDC1DE8A28000
+
+U+17
+; 17 BREAK (CONTROL)
+= END OF TRANSMISSION BLOCK
+= ETB
+* This is a transmission character
+) 038C27E82CB8A38000
+
+U+18
+; 18 CANCEL (CONTROL)
+= CAN
+* This is a transmission character
+) 018822747D68A28000
+
+U+19
+; 19 END (CONTROL)
+= END OF MEDIUM
+= EOM
+* This is a transmission character
+) 038C22F45EB8E28000
+
+U+1A
+; 1A INVALID (CONTROL)
+= SUBSTITUTE
+= SUB
+* This is a transmission character
+* Indicates a corrupted or invalid character; for use in transmission only
+) 018C1DD45CF8A38000
+
+/ Missing: 1B
+
+U+1C
+; 1C VOLUME SEPARATOR (FORMAT)
+= INFORMATION SEPARATOR FOUR
+= FILE SEPARATOR
+= FS
+) 0388308003000C60C6
+
+U+1D
+; 1D PART SEPARATOR (FORMAT)
+= INFORMATION SEPARATOR THREE
+= GROUP SEPARATOR
+= GS
+) 0188286003000C60C6
+
+U+1E
+; 1E CHAPTER SEPARATOR (FORMAT)
+= INFORMATION SEPARATOR TWO
+= RECORD SEPARATOR
+= RS
+) 038A30A003000C60C6
+
+U+1F
+; 1F SECTION SEPARATOR (FORMAT)
+= INFORMATION SEPARATOR ONE
+= UNIT SEPARATOR
+= US
+) 028A286003000C60C6
+
+/ Missing: 20..7E
+
+U+7F
+; 7F NOTHING (CONTROL)
+= DELETE
+= DEL
+* This is a meaningless control character
+* Used to signify a message is empty
+> 00 NULL
+> 16 IDLE
+) 030A2FD849E0838000

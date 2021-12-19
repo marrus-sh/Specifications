@@ -28,13 +28,13 @@ Although [Unicode] generally provides an extensive and well‐supported means of
 ### 2.2 Specifications
 {: id="kixt.specifications"}
 
-[Kixt Charset]
+[Kixt Charsets]
 
 : Defines the [Kixt Charset Model] and the file format for [Kixt Charset Definitions][Kixt Charset Definition].
 
 [Kixt Transmissions]
 
-: Defines the [Kixt Transmission Format] for storing and communicating Kixt texts.
+: Defines the [Kixt Transmission Format] for storing and communicating [Kixt texts][Kixt text].
 
 [Kixt Formatting and Controls]
 
@@ -42,11 +42,11 @@ Although [Unicode] generally provides an extensive and well‐supported means of
 
 [Kixt XML]
 
-: Defines the [Kixt XML document] format for using Kixt character sets with XML.
+: Defines the [Kixt XML document] format for using [Kixt charsets] with XML.
 
 ## 3. Changelog {#changelog}
 
-{: id="changelog.2021-12-11"} <time>2021-12-11</time>
+{: id="changelog.2021-12-19"} <time>2021-12-19</time>
 
 : Re·arranged layout; document is no longer Kixt‐specific..
 

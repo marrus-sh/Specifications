@@ -1,0 +1,9 @@
+;CHARSET<https://spec.go.kibi.family/-/kixt-charset/null>1.0
+
+% ASCII CONTROLS AND BASIC LATIN
+' <https://www.w3.org/ns/i18n#zyyy>
+
+U+0000
+; 00 NULL (FORMAT)
+= NUL
+* This is a meaningless format character which can be used for byte-padding when encoding texts

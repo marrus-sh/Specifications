@@ -1,11 +1,11 @@
-# Kixt Charset
+# Kixt Charsets
 
 ## Abstract {#abstract}
 
-The following specification defines a mechanism for defining character sets (*charsets*) which may be used in a [Kixt transmission][transmission] or rendering system.
-[Kixt charsets][charset] are, as their name implies, sets of [Kixt characters][character], mapping each one to a codepoint and assigning it particular character properties.
+The following specification defines a mechanism for defining character sets (*charsets*) which may be used in a [Kixt transmission] or rendering system.
+[Kixt charsets][Kixt charset] are, as their name implies, sets of [Kixt characters][Kixt character], mapping each one to a codepoint and assigning it particular character properties.
 This document details the meaning of these properties within the [Kixt Charset Model].
-Finally, this document introduces a plain-text document format, the [Kixt Charset Definition], for describing such charsets.
+Finally, this document introduces a plaintext document format, the [Kixt Charset Definition], for describing such charsets.
 
 <nav id="toc" markdown="block">
 ## Contents
@@ -23,53 +23,54 @@ The purpose of [Kixt] is to reduce the barriers of entry for developing unconven
 The [Kixt Charset Model], defined in this document, is one piece in an interlocking set of specifications working towards this goal.
 
 The [Kixt Charset Model] is not, and does not attempt to be, a replacement for [Unicode].
-In fact, every assigned Kixt [character] is required to have a defined Unicode mapping.
+In fact, every assigned [Kixt character] is required to have a defined Unicode mapping.
 If you are building an application which needs to process characters in a wide variety of scripts, languages, and/or directionalities, Unicode is the correct solution for you.
 
 ### 1.2 Relationship to Other Specifications
 {: id="introduction.related"}
 
-This document is part of the [Kixt family of specifications][Kixt Overview].
-It is also built upon the technologies of [RDF] and [OWL].
+This document is part of the [Kixt family of specifications][Kixt].
+It is also built upon the technologies of [R·D·F] and [O·W·L].
 It makes minor use of the [Ordered List Ontology] for defining its ordered lists.
 
 In this document, the following prefixes are used to represent the following strings:
 
 | Prefix | Expansion |
 | :--: | --- |
-| `kixt:` | `https://vocab.KIBI.network/Kixt/#` |
+| `kixt:` | `https://spec.go.kibi.family/ns/kixt/#` |
+| `i18n:` | `https://www.w3.org/ns/i18n#` |
+| `olo:` | `http://purl.org/ontology/olo/core#` |
 | `rdf:` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#` |
 | `xsd:` | `http://www.w3.org/2001/XMLSchema#` |
-| `olo:` | `http://purl.org/ontology/olo/core#` |
 
 ## 2. Data Model {#model}
 
 A <dfn id="dfn.character">Kixt character</dfn> is an abstract representation of a unit of text, with associated properties and assignment to a single codepoint.
 In Kixt, all codepoints are integer values between `0` and `65535`, inclusive.
 
-A <dfn id="dfn.charset">Kixt charset</dfn> is a collection of [Kixt characters][character].
+A <dfn id="dfn.charset">Kixt charset</dfn> is a collection of [Kixt characters][Kixt character].
 
-Within a [Kixt charset][charset], [characters][character] may be collected into <dfn id="dfn.block">blocks</dfn>.
+Within a [Kixt charset], [characters][Kixt character] may be collected into <dfn id="dfn.block">blocks</dfn>.
 Blocks may have “gaps,” but must otherwise be contiguous across assigned characters; this is enforced by the [Kixt Charset Definition] syntax.
 Each character may belong to only one block.
 
-Similarly, [Kixt characters][character] may be collected into <dfn id="dfn.script">scripts</dfn>.
+Similarly, [Kixt characters][Kixt character] may be collected into <dfn id="dfn.script">scripts</dfn>.
 Scripts are intended to allow for searching, accessing, and categorizing characters based on their histories or communities of usage.
 This specification makes no requirements on the structure of scripts, except to specify that each character may only belong to one.
 
-The <dfn id="dfn.Model">Kixt Charset Model</dfn> is an [RDF graph] which associates [charsets][charset], [characters][character], and their properties with one another according to the rules outlined in this document.
-The vocabulary for this model is the [Kixt Ontology] ([OWL] document), which normatively defines several classes and properties for use with the Model.
+The <dfn id="dfn.Model">Kixt Charset Model</dfn> is an [R·D·F graph] which associates [charsets][Kixt charset], [characters][Kixt character], and their properties with one another according to the rules outlined in this document.
+The vocabulary for this model is the [Kixt Ontology] ([O·W·L] document), which normatively defines several classes and properties for use with the Model.
 
-Although the [Kixt Charset Model] is defined using [RDF] and [OWL], it is not expected that most or even many applications which make use of it will be fully-fledged OWL reasoners.
-It is not presently recommended that applications interfacing with [Kixt charsets][charset] load their information from anything other than a [Kixt Charset Definition], whose resultant [RDF graph] is well-defined by this specification and may be abstracted as required.
-(However, its basis in RDF and OWL means that extensions to the Kixt Charset Model, as well as alternate means of loading and processing Kixt charsets, may conceivably be designed in the future.)
+Although the [Kixt Charset Model] is defined using [R·D·F] and [O·W·L], it is not expected that most or even many applications which make use of it will be fully‐fledged OWL reasoners.
+It is not presently recommended that applications interfacing with [Kixt charsets][Kixt charset] load their information from anything other than a [Kixt Charset Definition], whose resultant [R·D·F graph] is weldefined by this specification and may be abstracted as required.
+(However, its basis in R·D·F and O·W·L means that extensions to the Kixt Charset Model, as well as alternate means of loading and processing Kixt charsets, may conceivably be designed in the future.)
 
 ### 2.1 Types of Resource
 {: id="model.resources"}
 
-There are two major types of resource in the Kixt Charset Model: [charsets][charset] and [characters][character].
+There are two major types of resource in the Kixt Charset Model: [charsets][Kixt charset] and [characters][Kixt character].
 These are represented by the classes `kixt:Charset` and `kixt:Character`.
-In addition to these, `kixt:Block` and `kixt:Script` represent [blocks][block] and [scripts][script] of characters, respectively.
+In addition to these, `kixt:Block` and `kixt:Script` represent [blocks][Kixt block] and [scripts][Kixt script] of characters, respectively.
 Only `kixt:Charset` need explicitly be declared as the [`rdf:type`] of a resource; the remaining classes are implied through an instance's assignment to various properties (`kixt:character`, `kixt:block`, `kixt:script`).
 
 Many other classes of resource are defined in the [Kixt Ontology].
@@ -78,20 +79,20 @@ However, knowledge of their existence is not required for the processes describe
 ### 2.2 Datatypes
 {: id="model.datatypes"}
 
-As an [RDF]-based model, the [Kixt Charset Model] naturally inherits the various datatypes introduced in [RDF Concepts], including those inherited from [XSD Datatypes] and elsewhere.
+As an [R·D·F]‐based model, the [Kixt Charset Model] naturally inherits the various datatypes introduced in [R·D·F Concepts], including those inherited from [X·S·D Datatypes] and elsewhere.
 It also introduces five new datatypes:
 
 + `kixt:BasicType`: One of the following [`xsd:anyURI`]s:
 
-    + `https://vocab.KIBI.network/Kixt/#UNASSIGNED`
-    + `https://vocab.KIBI.network/Kixt/#CONTROL`
-    + `https://vocab.KIBI.network/Kixt/#MESSAGING`
-    + `https://vocab.KIBI.network/Kixt/#FORMAT`
-    + `https://vocab.KIBI.network/Kixt/#DATA`
-    + `https://vocab.KIBI.network/Kixt/#NONSPACING`
-    + `https://vocab.KIBI.network/Kixt/#SPACING`
-    + `https://vocab.KIBI.network/Kixt/#PRIVATEUSE`
-    + `https://vocab.KIBI.network/Kixt/#NONCHARACTER`
+    + `https://spec.go.kibi.family/ns/kixt/#UNASSIGNED`
+    + `https://spec.go.kibi.family/ns/kixt/#CONTROL`
+    + `https://spec.go.kibi.family/ns/kixt/#MESSAGING`
+    + `https://spec.go.kibi.family/ns/kixt/#FORMAT`
+    + `https://spec.go.kibi.family/ns/kixt/#DATA`
+    + `https://spec.go.kibi.family/ns/kixt/#NONSPACING`
+    + `https://spec.go.kibi.family/ns/kixt/#SPACING`
+    + `https://spec.go.kibi.family/ns/kixt/#PRIVATEUSE`
+    + `https://spec.go.kibi.family/ns/kixt/#NONCHARACTER`
 
 + `kixt:Name`: An [`xsd:string`] matching the [`<Name>`] production below.
 
@@ -101,7 +102,7 @@ It also introduces five new datatypes:
 
 + `kixt:Ternary`: An [`xsd:string`] whose value is either `YES`, `NO`, or the empty string.
 
-As [OWL] datatypes, you should not use these to type [RDF] literals; use [`xsd:anyURI`], [`xsd:string`], [`xsd:integer`] or similar instead.
+As [O·W·L] datatypes, you should not use these to type [R·D·F] literals; use [`xsd:anyURI`], [`xsd:string`], [`xsd:integer`] or similar instead.
 However, they are useful for expressing constraints on relations.
 
 ## 3. Charset Definitions {#definition}
@@ -118,9 +119,9 @@ CharsetDefinition =
 ```
 {: id="prod.CharsetDefinition"}
 
-A <dfn id="dfn.Definition">Kixt Charset Definition</dfn> is a [UTF-8] or [UTF-16]–encoded file (determined by a leading BOM, and defaulting to UTF-8 if no BOM is present) consisting of any number of block or script declarations, interspersed with any number of codepoint definitions, comments, or lines of whitespace.
-This section describes the syntax of such documents, in [ABNF] and prose.
-It also describes how processors can use [Kixt Charset Definitions][Kixt Charset Definition] to generate [RDF graphs][RDF graph].
+A <dfn id="dfn.Definition">Kixt Charset Definition</dfn> is a [U·T·F‐8] or [U·T·F‐16]–encoded file (determined by a leading B·O·M, and defaulting to U·T·F‐8 if no B·O·M is present) consisting of any number of block or script declarations, interspersed with any number of codepoint definitions, comments, or lines of whitespace.
+This section describes the syntax of such documents, in [A·B·N·F] and prose.
+It also describes how processors can use [Kixt Charset Definitions][Kixt Charset Definition] to generate [R·D·F graphs][R·D·F graph].
 
 <div role="note" markdown="block">
 The file extension `.kichar` or `.kch` is suggested for [Kixt Charset Definitions][Kixt Charset Definition].
@@ -128,13 +129,13 @@ The file extension `.kichar` or `.kch` is suggested for [Kixt Charset Definition
 
 ### 3.1 Null Handling
 
-Programs which process Kixt Charset Definitions must *ignore* any `U+0000 NULL` characters which appear in a document, behaving as though they were not present.
+Programs which process [Kixt Charset Definitions][Kixt Charset Definition] must *ignore* any `U+0000 NULL` characters which appear in a document, behaving as though they were not present.
 
 <div role="note" markdown="block">
-This effectively allows a [UTF-16]–encoded document to be processed without a BOM if it only contains codepoints in the ASCII range.
+This effectively allows a [U·T·F‐16]‐encoded document to be processed without a B·O·M if it only contains codepoints in the A·S·C·I·I range.
 </div>
 
-### 3.2 End-of-Line Handling
+### 3.2 End‐of‐Line Handling
 {: id="definition.eol"}
 
 ```abnf
@@ -147,8 +148,8 @@ Break = %x2028
 `U+2028 LINE SEPARATOR` is the only formally recognized line separator in a [Kixt Charset Definition].
 However, to ease in the use of Kixt Charset Definitions on platforms for which support for `U+2028 LINE SEPARATOR` is lacking, programs which process Kixt Charset Definitions must behave as though they normalized all of the following, on input and before parsing, to a single `U+2028 LINE SEPARATOR`:
 
-+ the two-character sequence `<U+000D, U+000A>`
-+ the two-character sequence `<U+000D, U+0085>`
++ the two‐character sequence `<U+000D, U+000A>`
++ the two‐character sequence `<U+000D, U+0085>`
 + the single character `U+000A LINE FEED`
 + the single character `U+0085 NEXT LINE`
 + any `U+000D CARRIAGE RETURN` character that is not immediately followed by `U+000A LINE FEED` or `U+0085 NEXT LINE`.
@@ -242,7 +243,7 @@ AnyChar = NoBreak / Break
 ```
 {: id="prod.AnyChar"}
 
-You may, generally speaking, use non-ASCII and private-use characters in a [Kixt Charset Definition], except in restricted productions like [`<Name>`].
+You may, generally speaking, use non‐A·S·C·I·I and private‐use characters in a [Kixt Charset Definition], except in restricted productions like [`<Name>`].
 
 ```abnf
 Zero = %x30
@@ -265,7 +266,7 @@ Decimal = %x30-39
 ```
 {: id="prod.Decimal"}
 
-Decimal numbers use the standard ASCII digits.
+Decimal numbers use the standard A·S·C·I·I digits.
 
 ```abnf
 NonZeroHex = %x31-39 / %x41-46
@@ -281,7 +282,7 @@ Hex = %x30-39 / %x41-46 / %x61-66
 ```
 {: id="prod.Hex"}
 
-Hexadecimal numbers ([`<UpperHex>`]) use only the digits `0`–`9` and the uppercase ASCII letters `A`–`F`.
+Hexadecimal numbers ([`<UpperHex>`]) use only the digits `0`–`9` and the uppercase A·S·C·I·I letters `A`–`F`.
 The [`<Hex>`] production, which also allows lowercase `a`–`f`, is only used in [`<IRI>`]s.
 
 ```abnf
@@ -293,8 +294,8 @@ Alpha = %x41-5A / %x61-7A
 ```
 {: id="prod.Alpha"}
 
-A number of productions in [Kixt Charset Definitions][Kixt Charset Definition] use only the capital ASCII alphabetic characters ([`<UpperAlpha>`]).
-[`<IRI>`]s make use of the small ASCII alphabetic characters as well ([`<Alpha>`]).
+A number of productions in [Kixt Charset Definitions][Kixt Charset Definition] use only the capital A·S·C·I·I alphabetic characters ([`<UpperAlpha>`]).
+[`<IRI>`]s make use of the small A·S·C·I·I alphabetic characters as well ([`<Alpha>`]).
 
 ```abnf
 IRI =
@@ -481,7 +482,7 @@ URI-sub-delims = %x21 / %x24 / %x26-2C / %x3B / %x3D
 ```
 {: id="prod.URI-sub-delims"}
 
-[IRI]s must be [`<IRI>`]s as defined by [RFC3987], from which the above productions were taken.
+[IRI]s must be [`<IRI>`]s as defined by [R·F·C 3987], from which the above productions were taken.
 
 ```abnf
 NonEmptyString = NoSpace *([Space] NoSpace)
@@ -543,7 +544,7 @@ Name =
 ```
 {: id="prod.Name"}
 
-Names must start with an uppercase ASCII letter, and may consist of uppercase ASCII letters, ASCII digits, `U+002D HYPHEN-MINUS`, or spaces.
+Names must start with an uppercase A·S·C·I·I letter, and may consist of uppercase A·S·C·I·I letters, A·S·C·I·I digits, `U+002D HYPHEN-MINUS`, or spaces.
 Hyphens and spaces must not end a name or appear in sequence.
 Hyphens must not be surrounded by spaces, and digits must not be preceded by a space.
 
@@ -580,7 +581,7 @@ Integer =
 {: id="prod.Integer"}
 
 <div role="note" markdown="block">
-The rules defined above are designed to facilitate first-match-wins, greedy matching.
+The rules defined above are designed to facilitate first‐match‐wins, greedy matching.
 </div>
 
 Ordinary codepoints must be hexadecimal numbers in the range `0000`–`FFFF` but may be preceded by any number of zeroes.
@@ -626,12 +627,12 @@ Comment =
 ```
 {: id="prod.Comment"}
 
-A single-line comment is a single line beginning with `U+002F SOLIDUS` and then followed by any number of other characters.
-Multi-line comments begin with three `U+002E FULL STOP` characters and end with three `U+002F SOLIDUS` characters.
+A single·line comment is a single line beginning with `U+002F SOLIDUS` and then followed by any number of other characters.
+Multiline comments begin with three `U+002E FULL STOP` characters and end with three `U+002F SOLIDUS` characters.
 Comments should be ignored during processing.
 
 <div role="note" markdown="block">
-Note that multi-line comments can only appear on the "top level" and not inside of character declarations or other productions.
+Note that multiline comments can only appear on the “top level” and not inside of character declarations or other productions.
 </div>
 
 ### 3.5 Common Constructs
@@ -658,7 +659,7 @@ Aliases = 1*Alias
 An [`<Aliases>`] gives alternate [`<Name>`]s by which a `kixt:Block` or `kixt:Character` might be known.
 It consists of one or more lines, each beginning with an `U+003D EQUALS SIGN`, and followed by a [`<Name>`].
 
-Upon reaching an [`<Aliases>`], for each [`<Name>`], create a new [RDF triple] with <var>current parent</var> as its subject, <code>kixt:alias</code> as its predicate, and the value of the [`<Name>`] as its object, as an [`xsd:string`].
+Upon reaching an [`<Aliases>`], for each [`<Name>`], create a new [R·D·F triple] with <var>current parent</var> as its subject, <code>kixt:alias</code> as its predicate, and the value of the [`<Name>`] as its object, as an [`xsd:string`].
 
 #### 3.5.2 Other names
 {: id="definition.common.other_names"}
@@ -679,7 +680,7 @@ OtherNames = 1*OtherName
 An [`<OtherNames>`] gives alternate names for a `kixt:Charset`, `kixt:Block`, `kixt:Script`, or `kixt:Character`, which may be more freeform than the [`<Name>`] production allows.
 It consists of one or more lines, each beginning with an `U+002D HYPHEN-MINUS`, and followed by a [`<NonEmptyString>`].
 
-Upon reaching an [`<OtherNames>`], for each [`<NonEmptyString>`], create a new [RDF triple] with <var>current parent</var> as its subject, <code>kixt:alsoKnownAs</code> as its predicate, and the value of the [`<NonEmptyString>`] as its object, as an [`xsd:string`].
+Upon reaching an [`<OtherNames>`], for each [`<NonEmptyString>`], create a new [R·D·F triple] with <var>current parent</var> as its subject, <code>kixt:alsoKnownAs</code> as its predicate, and the value of the [`<NonEmptyString>`] as its object, as an [`xsd:string`].
 
 #### 3.5.3 Notes
 {: id="definition.common.notes"}
@@ -700,7 +701,7 @@ Notes = 1*Note
 A [`<Notes>`] gives a freeform space for adding informative notes to a `kixt:Charset`, `kixt:Block`, `kixt:Script`, or `kixt:Character`.
 It consists of one or more lines, each beginning with an `U+002A ASTERISK`, and followed by a [`<NonEmptyString>`].
 
-Upon reaching a [`<Notes>`], for each [`<NonEmptyString>`], create a new [RDF triple] with <var>current parent</var> as its subject, <code>kixt:note</code> as its predicate, and the value of the [`<NonEmptyString>`] as its object, as an [`xsd:string`].
+Upon reaching a [`<Notes>`], for each [`<NonEmptyString>`], create a new [R·D·F triple] with <var>current parent</var> as its subject, <code>kixt:note</code> as its predicate, and the value of the [`<NonEmptyString>`] as its object, as an [`xsd:string`].
 
 ### 3.6 Charset Declaration
 {: id="definition.charset"}
@@ -732,15 +733,15 @@ CharsetIdentifier =
 ```
 {: id="prod.CharsetInfo"}
 
-A [`<CharsetIdentifier>`] defines the IRI and version for a [Kixt Charset Definition]'s `kixt:Charset`.
+A [`<CharsetIdentifier>`] defines the I·R·I and version for a [Kixt Charset Definition]'s `kixt:Charset`.
 Upon reaching a [`<CharsetIdentifier>`], set the <var>current charset</var> to the IRI specified by [`<IRI>`].
 Set <var>current parent</var> to <var>current charset</var>.
-Create an [RDF triple] with the <var>current charset</var> as its subject, [`rdf:type`] as its predicate, and `kixt:Charset` as its object.
+Create an [R·D·F triple] with the <var>current charset</var> as its subject, [`rdf:type`] as its predicate, and `kixt:Charset` as its object.
 
-If a first [`<Integer>`] is present, create an [RDF triple] with the <var>current charset</var> as its subject, `kixt:version` as its predicate, and the value of the first [`<Integer>`] as its object, as an [`xsd:integer`].
+If a first [`<Integer>`] is present, create an [R·D·F triple] with the <var>current charset</var> as its subject, `kixt:version` as its predicate, and the value of the first [`<Integer>`] as its object, as an [`xsd:integer`].
 If a second [`<Integer>`] is present, create an RDF triple with the <var>current charset</var> as its subject, `kixt:revision` as its predicate, and the value of the second [`<Integer>`] as its object, as an [`xsd:integer`].
 
-Finally, set <var>current script</var> to `kixt:UNKNOWN`; this is the default [script].
+Finally, set <var>current script</var> to `i18n:zzzz`; this is the default [script][Kixt script].
 
 #### 3.6.2 Charset properties
 {: id="definition.charset.properties"}
@@ -762,13 +763,13 @@ CharsetProperties =
 {: id="prod.CharsetProperties"}
 
 A [`<CharsetProperties>`] defines additional properties on a `kixt:Character`.
-At the moment, the only additional property defined is a promise as to whether the character set is [variable-width compatible].
+At the moment, the only additional property defined is a promise as to whether the character set is [variable‐width‐compatible][variable‐width‐compatible character set].
 This property must be present if the production is nonempty.
 [`<CharsetProperties>`] begins with an `U+0026 AMPERSAND`.
 
 Upon reaching a [`<CharsetProperties>`]:
 
-01. Create a new [RDF triple] with <var>current charset</var> as its subject, `kixt:supportsVariableEncoding` as its predicate, and an object of `true`, as an [`xsd:boolean`], if [`<Variable>`] is present, and `false`, as an [`xsd:boolean`], otherwise.
+01. Create a new [R·D·F triple] with <var>current charset</var> as its subject, `kixt:supportsVariableEncoding` as its predicate, and an object of `true`, as an [`xsd:boolean`], if [`<Variable>`] is present, and `false`, as an [`xsd:boolean`], otherwise.
 
 ### 3.7 Block Declaration
 {: id="definition.block"}
@@ -803,9 +804,9 @@ The special name `NO BLOCK` signifies no block.
 A [`<BlockDeclaration>`] with a [`<Name>`] of `NO BLOCK` must not have a [`<Aliases>`], [`<OtherNames>`], or [`<Notes>`].
 
 Upon reaching a [`<BlockName>`], if the value of [`<Name>`] is `NO BLOCK`, set <var>in a block</var> to <i>false</i>.
-Otherwise, set <var>in a block</var> to <i>true</i>, set <var>current block</var> to a new [blank node], and set <var>current parent</var> to <var>current block</var>.
+Otherwise, set <var>in a block</var> to <i>true</i>, set <var>current block</var> to a new [blank node][R·D·F blank node], and set <var>current parent</var> to <var>current block</var>.
 
-If <var>in a block</var> is <i>true</i>, create a new [RDF triple] with <var>current block</var> as its subject, `kixt:name` as its predicate, and the value of [`<Name>`] as its object, as a [`xsd:string`].
+If <var>in a block</var> is <i>true</i>, create a new [R·D·F triple] with <var>current block</var> as its subject, `kixt:name` as its predicate, and the value of [`<Name>`] as its object, as a [`xsd:string`].
 
 ### 3.8 Script Declaration
 {: id="definition.script"}
@@ -832,17 +833,17 @@ ScriptIdentifier =
 ```
 {: id="prod.ScriptIdentifier"}
 
-A [`<ScriptIdentifier>`] sets the IRI for the current `kixt:Script`.
+A [`<ScriptIdentifier>`] sets the [I·R·I] for the current `kixt:Script`.
 It begins with a `U+0027 APOSTROPHE`, which is followed by the script [`<IRI>`].
 
-Three special scripts are defined in the [Kixt Ontology]:
+Three special scripts are defined:
 
-+ `kixt:COMMON`, for characters which do not belong to a single script
-+ `kixt:INHERITED`, for combining characters which inherit their script from some base character
-+ `kixt:UNKNOWN`, for characters whose script is unknown
++ `i18n:zyyy`, for characters which do not belong to a single script
++ `i18n:zinh`, for combining characters which inherit their script from some base character
++ `i18n:zzzz`, for characters whose script is unknown
 
 <div role="note" markdown="block">
-The above values are given prefixed, but the actual value of [`<IRI>`] must be a full (expanded) [IRI].
+The above values are given prefixed, but the actual value of [`<IRI>`] must be a full (expanded) [I·R·I].
 </div>
 
 Upon reaching a [`<ScriptIdentifier>`], set <var>current script</var> to [`<IRI>`] and <var>current parent</var> to <var>current script</var>.
@@ -868,13 +869,13 @@ CharacterDefinition =
 A [`<CharacterDefinition>`] defines a single `kixt:Character`.
 The [`<UnicodeMapping>`] and [`<CharacterInfo>`] productions are required; the [`<CompatibilityMapping>`], [`<DecompositionMapping>`], and [`<AdditionalProperties>`] productions are required but may be empty; all other productions are optional but must be specified in the order above.
 
-Upon reaching a [`<CharacterDefinition>`], set <var>current character</var> to a new [blank node].
+Upon reaching a [`<CharacterDefinition>`], set <var>current character</var> to a new [blank node][R·D·F blank node].
 Set <var>current parent</var> to <var>current character</var>.
-Create a new [RDF triple] with <var>current charset</var> as its subject, `kixt:character` as its predicate, and <var>current character</var> as its object.
+Create a new [R·D·F triple] with <var>current charset</var> as its subject, `kixt:character` as its predicate, and <var>current character</var> as its object.
 
-If <var>in a block</var> is <i>true</i>, create a new [RDF triple] with <var>current character</var> as its subject, `kixt:block` as its predicate, and <var>current block</var> as its object.
+If <var>in a block</var> is <i>true</i>, create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:block` as its predicate, and <var>current block</var> as its object.
 
-Create a new [RDF triple] with <var>current character</var> as its subject, `kixt:script` as its predicate, and <var>current script</var> as its object.
+Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:script` as its predicate, and <var>current script</var> as its object.
 
 #### 3.9.1 Unicode mapping
 {: id="definition.character.unicode"}
@@ -897,27 +898,27 @@ These are given as [`<UnicodeCodepoint>`]s, one per line, each optionally follow
 
 The [Kixt Charset Definition] format requires every [`<CharacterDefinition>`] to have a [`<UnicodeMapping>`].
 The character `U+FFFD REPLACEMENT CHARACTER` can be used in situations where no mapping is desired.
-However, the use of private-use mappings is generally preferable.
+However, the use of private‐use mappings is generally preferable.
 
-Upon reaching a [`<UnicodeMapping>`], set <var>current sequence</var> to a new [blank node].
-Create a new [RDF triple] with <var>current sequence</var> as its subject, [`olo:length`] as its predicate, and total number of [`<UnicodeCodepoint>`]s within the [`<UnicodeMapping>`] as its object, as an [`xsd:integer`].
+Upon reaching a [`<UnicodeMapping>`], set <var>current sequence</var> to a new [blank node][R·D·F blank node].
+Create a new [R·D·F triple] with <var>current sequence</var> as its subject, [`olo:length`] as its predicate, and total number of [`<UnicodeCodepoint>`]s within the [`<UnicodeMapping>`] as its object, as an [`xsd:integer`].
 
 For each [`<UnicodeCodepoint>`]:
 
-01. Set <var>current slot</var> to a new [blank node].
-    Create a new [RDF triple] with <var>current slot</var> as its subject, [`olo:index`] as its predicate, and the one-based index of the [`<UnicodeCodepoint>`] within the [`<UnicodeMapping>`] as its object, as an [`xsd:integer`].
+01. Set <var>current slot</var> to a new [blank node][R·D·F blank node].
+    Create a new [R·D·F triple] with <var>current slot</var> as its subject, [`olo:index`] as its predicate, and the one-based index of the [`<UnicodeCodepoint>`] within the [`<UnicodeMapping>`] as its object, as an [`xsd:integer`].
 
-02. Set <var>current item</var> to a new [blank node].
-    Create a new [RDF triple] with <var>current item</var> as its subject, [`rdf:value`] as its predicate, and the value of the [`<UnicodeCodepoint>`] as its object, as an [`xsd:integer`].
+02. Set <var>current item</var> to a new [blank node][R·D·F blank node].
+    Create a new [R·D·F triple] with <var>current item</var> as its subject, [`rdf:value`] as its predicate, and the value of the [`<UnicodeCodepoint>`] as its object, as an [`xsd:integer`].
 
-03. Create a new [RDF triple] with <var>current slot</var> as its subject, [`olo:item`] as its predicate, and <var>current item</var> as its object.
+03. Create a new [R·D·F triple] with <var>current slot</var> as its subject, [`olo:item`] as its predicate, and <var>current item</var> as its object.
 
-04. Create a new [RDF triple] with <var>current sequence</var> as its subject, [`olo:slot`] as its predicate, and <var>current slot</var> as its object.
+04. Create a new [R·D·F triple] with <var>current sequence</var> as its subject, [`olo:slot`] as its predicate, and <var>current slot</var> as its object.
 
-Finally, create a new [RDF triple] with <var>current character</var> as its subject, `kixt:unicode` as its predicate, and <var>current sequence</var> as its object.
+Finally, create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:unicode` as its predicate, and <var>current sequence</var> as its object.
 
 <div role="note" markdown="block">
-In [Turtle], the resulting [RDF graph] produced by the above steps will look something like the following:
+In [Turtle], the resulting [R·D·F graph] produced by the above steps will look something like the following:
 
 ```ttl
 [ ] kixt:unicode [
@@ -968,20 +969,20 @@ It begins with a `U+003B SEMICOLON`, followed by a codepoint in either hexadecim
 
 Upon reaching a [`<CharacterInfo>`], perform the following steps:
 
-01. If there is already some subject [node] which is an object of the predicate `kixt:character` on the subject <var>current charset</var>, for whom the object of the predicate `kixt:codepoint` is the value of the [`<Codepoint>`] or [`<BinaryCodepoint>`] (whichever is present), replace <var>current character</var> with the first such node in all [RDF triples][RDF triple] in which <var>current character</var> is a subject or object, and set <var>current character</var> to this new node.
+01. If there is already some subject [node][R·D·F node] which is an object of the predicate `kixt:character` on the subject <var>current charset</var>, for whom the object of the predicate `kixt:codepoint` is the value of the [`<Codepoint>`] or [`<BinaryCodepoint>`] (whichever is present), replace <var>current character</var> with the first such node in all [R·D·F triples][R·D·F triple] in which <var>current character</var> is a subject or object, and set <var>current character</var> to this new node.
 
     <div role="note" markdown="block">
     This handles the case where a `kixt:Character` with this codepoint has already been created as part of a decomposition mapping.
     </div>
 
-    Otherwise, create a new [RDF triple] with <var>current character</var> as its subject, `kixt:codepoint` as its predicate, and the value of either [`<Codepoint>`] or [`<BinaryCodepoint>`] as its object, as an [`xsd:integer`].
+    Otherwise, create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:codepoint` as its predicate, and the value of either [`<Codepoint>`] or [`<BinaryCodepoint>`] as its object, as an [`xsd:integer`].
 
-02. Create a new [RDF triple] with <var>current character</var> as its subject, `kixt:name` as its predicate, and the value of [`<Name>`] as its object, as an [`xsd:string`].
+02. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:name` as its predicate, and the value of [`<Name>`] as its object, as an [`xsd:string`].
 
-03. Create a new [RDF triple] with <var>current character</var> as its subject, `kixt:basicType` as its predicate, and the value of [`<BasicType>`], appended to the end of the string `https://vocab.KIBI.network/Kixt/#`, as its object, as an [`xsd:anyURI`].
+03. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:basicType` as its predicate, and the value of [`<BasicType>`], appended to the end of the string `https://spec.go.kibi.family/ns/kixt/#`, as its object, as an [`xsd:anyURI`].
 
     <div role="note" markdown="block">
-    Note that this is a [literal] with a [datatype IRI] of [`xsd:anyURI`], *not* an [RDF IRI][IRI].
+    Note that this is a [literal][R·D·F literal] with a [datatype I·R·I][R·D·F datatype I·R·I] of [`xsd:anyURI`], *not* an [R·D·F I·R·I][I·R·I].
     </div>
 
 #### 3.9.3 Compatibility mapping
@@ -1006,39 +1007,39 @@ The entire production may be empty; if so, the character's compatibility decompo
 
 The value `kixt:GENERIC` indicates a generic compatibility mode and is the default.
 
-Upon reaching a [`<CompatibilityMapping>`], set <var>current sequence</var> to a new [blank node].
-Create a new [RDF triple] with <var>current sequence</var> as its subject, [`olo:length`] as its predicate, and the total number of [`<Codepoint>`]s within the [`<CompatibilityMapping>`], or `1` if [`<CompatibilityMapping>`] is empty, as its object, as an [`xsd:integer`].
+Upon reaching a [`<CompatibilityMapping>`], set <var>current sequence</var> to a new [blank node][R·D·F blank node].
+Create a new [R·D·F triple] with <var>current sequence</var> as its subject, [`olo:length`] as its predicate, and the total number of [`<Codepoint>`]s within the [`<CompatibilityMapping>`], or `1` if [`<CompatibilityMapping>`] is empty, as its object, as an [`xsd:integer`].
 
 For each [`<Codepoint>`], or if the [`<CompatibilityMapping>`] is empty:
 
 01. Set <var>current slot</var> to a new [blank node].
-    Create a new [RDF triple] with <var>current slot</var> as its subject, [`olo:index`] as its predicate, and the one-based index of the [`<Codepoint>`] within the [`<CompatibilityMapping>`], or `1` if [`<CompatibilityMapping>`] is empty, as its object, as an [`xsd:integer`].
+    Create a new [R·D·F triple] with <var>current slot</var> as its subject, [`olo:index`] as its predicate, and the one-based index of the [`<Codepoint>`] within the [`<CompatibilityMapping>`], or `1` if [`<CompatibilityMapping>`] is empty, as its object, as an [`xsd:integer`].
 
 02. If [`<CompatibilityMapping>`] is empty, set <var>current item</var> to <var>current character</var>.
-	Otherwise, if there is already some subject [node] which is an object of the predicate `kixt:character` on the subject <var>current charset</var>, for whom the object of the predicate `kixt:codepoint` is the value of the current [`<Codepoint>`], set <var>current item</var> to that node.
-    Otherwise:
+	Otherwise, if there is already some subject [node][R·D·F node] which is an object of the predicate `kixt:character` on the subject <var>current charset</var>, for whom the object of the predicate `kixt:codepoint` is the value of the current [`<Codepoint>`], set <var>current item</var> to that node.
+    Otherwise :—
 
-    01. Set <var>current item</var> to a new [blank node].
+    01. Set <var>current item</var> to a new [blank node][R·D·F blank node].
 
-    02. Create a new [RDF triple] with <var>current charset</var> as its subject, `kixt:character` as its predicate, and <var>current item</var> as its object.
+    02. Create a new [R·D·F triple] with <var>current charset</var> as its subject, `kixt:character` as its predicate, and <var>current item</var> as its object.
 
-    03. Create a new [RDF triple] with <var>current item</var> as its subject, `kixt:codepoint` as its predicate, and the value of [`<Codepoint>`] as its object, as an [`xsd:integer`].
+    03. Create a new [R·D·F triple] with <var>current item</var> as its subject, `kixt:codepoint` as its predicate, and the value of [`<Codepoint>`] as its object, as an [`xsd:integer`].
 
-03. Create a new [RDF triple] with <var>current slot</var> as its subject, [`olo:item`] as its predicate, and <var>current item</var> as its object.
+03. Create a new [R·D·F triple] with <var>current slot</var> as its subject, [`olo:item`] as its predicate, and <var>current item</var> as its object.
 
-04. Create a new [RDF triple] with <var>current sequence</var> as its subject, [`olo:slot`] as its predicate, and <var>current slot</var> as its object.
+04. Create a new [R·D·F triple] with <var>current sequence</var> as its subject, [`olo:slot`] as its predicate, and <var>current slot</var> as its object.
 
-05. Create a new [RDF triple] with <var>current sequence</var> as its subject, `kixt:compatibilityMode` as its predicate, and the value of [`<IRI>`], or `https://vocab.KIBI.network/Kixt/#GENERIC` if [`<IRI>`] is not present, as its object, as an [IRI].
+05. Create a new [R·D·F triple] with <var>current sequence</var> as its subject, `kixt:compatibilityMode` as its predicate, and the value of [`<IRI>`], or `https://spec.go.kibi.family/ns/kixt/#GENERIC` if [`<IRI>`] is not present, as its object, as an [I·R·I].
 
-Finally, create a new [RDF triple] with <var>current character</var> as its subject, `kixt:compatibility` as its predicate, and <var>current sequence</var> as its object.
+Finally, create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:compatibility` as its predicate, and <var>current sequence</var> as its object.
 
 <div role="note" markdown="block">
-In [Turtle], the resulting [RDF graph] produced by the above steps will look something like the following:
+In [Turtle], the resulting [R·D·F graph] produced by the above steps will look something like the following:
 
 ```ttl
 [ ] kixt:compatibility [
 	olo:length 1;
-	kixt:mode <example:mode> ;
+	kixt:compatibilityMode <example:mode> ;
 	olo:slot [
 		olo:index 1 ;
 		olo:item [ kixt:codepoint: 69 ] ] ]
@@ -1072,37 +1073,37 @@ It begins with either one or two `U+003C LESS-THAN SIGN`s (indicating whether th
 The entire production may be empty; if so, the character's canonical decomposition is to itself.
 
 <div role="note" markdown="block">
-A decomposition mapping to a single character is *always* preferred, so the two-`U+003C LESS-THAN SIGN` form is only permitted when defining a mapping to two or more codepoints.
+A decomposition mapping to a single character is *always* preferred, so the two‐`U+003C LESS-THAN SIGN` form is only permitted when defining a mapping to two or more codepoints.
 </div>
 
-Upon reaching a [`<DecompositionMapping>`], set <var>current sequence</var> to a new [blank node].
-Create a new [RDF triple] with <var>current sequence</var> as its subject, [`olo:length`] as its predicate, and total number of [`<Codepoint>`]s within the [`<DecompositionMapping>`], or `1` if [`<DecompositionMapping>`] is empty, as its object, as an [`xsd:integer`].
+Upon reaching a [`<DecompositionMapping>`], set <var>current sequence</var> to a new [blank node][R·D·F blank node].
+Create a new [R·D·F triple] with <var>current sequence</var> as its subject, [`olo:length`] as its predicate, and total number of [`<Codepoint>`]s within the [`<DecompositionMapping>`], or `1` if [`<DecompositionMapping>`] is empty, as its object, as an [`xsd:integer`].
 
 For each [`<Codepoint>`], or if the [`<DecompositionMapping>`] is empty:
 
-01. Set <var>current slot</var> to a new [blank node].
-    Create a new [RDF triple] with <var>current slot</var> as its subject, [`olo:index`] as its predicate, and the one-based index of the [`<Codepoint>`] within the [`<DecompositionMapping>`], or `1` if [`<DecompositionMapping>`] is empty, as its object, as an [`xsd:integer`].
+01. Set <var>current slot</var> to a new [blank node][R·D·F blank node].
+    Create a new [R·D·F triple] with <var>current slot</var> as its subject, [`olo:index`] as its predicate, and the one-based index of the [`<Codepoint>`] within the [`<DecompositionMapping>`], or `1` if [`<DecompositionMapping>`] is empty, as its object, as an [`xsd:integer`].
 
 02. If [`<DecompositionMapping>`] is empty, set <var>current item</var> to <var>current character</var>.
-    If there is already some subject [node] which is an object of the predicate `kixt:character` on the subject <var>current charset</var>, for whom the object of the predicate `kixt:codepoint` is the value of the current [`<Codepoint>`], set <var>current item</var> to that node.
-    Otherwise:
+    If there is already some subject [node][R·D·F node] which is an object of the predicate `kixt:character` on the subject <var>current charset</var>, for whom the object of the predicate `kixt:codepoint` is the value of the current [`<Codepoint>`], set <var>current item</var> to that node.
+    Otherwise :—
 
-    01. Set <var>current item</var> to a new [blank node].
+    01. Set <var>current item</var> to a new [blank node][R·D·F blank node].
 
-    02. Create a new [RDF triple] with <var>current charset</var> as its subject, `kixt:character` as its predicate, and <var>current item</var> as its object.
+    02. Create a new [R·D·F triple] with <var>current charset</var> as its subject, `kixt:character` as its predicate, and <var>current item</var> as its object.
 
-    03. Create a new [RDF triple] with <var>current item</var> as its subject, `kixt:codepoint` as its predicate, and the value of [`<Codepoint>`], converted from hexadecimal, as its object, as an [`xsd:integer`].
+    03. Create a new [R·D·F triple] with <var>current item</var> as its subject, `kixt:codepoint` as its predicate, and the value of [`<Codepoint>`], converted from hexadecimal, as its object, as an [`xsd:integer`].
 
-03. Create a new [RDF triple] with <var>current slot</var> as its subject, [`olo:item`] as its predicate, and <var>current item</var> as its object.
+03. Create a new [R·D·F triple] with <var>current slot</var> as its subject, [`olo:item`] as its predicate, and <var>current item</var> as its object.
 
-04. Create a new [RDF triple] with <var>current sequence</var> as its subject, [`olo:slot`] as its predicate, and <var>current slot</var> as its object.
+04. Create a new [R·D·F triple] with <var>current sequence</var> as its subject, [`olo:slot`] as its predicate, and <var>current slot</var> as its object.
 
-05. Create a new [RDF triple] with <var>current sequence</var> as its subject, `kixt:preferred` as its predicate, and an object of `true`, as an [`xsd:boolean`], if [`<DecompositionMapping>`] contains two `U+003C LESS-THAN SIGN`s or only one [`<Codepoint>`], and `false`, as an [`xsd:boolean`], otherwise.
+05. Create a new [R·D·F triple] with <var>current sequence</var> as its subject, `kixt:preferred` as its predicate, and an object of `true`, as an [`xsd:boolean`], if [`<DecompositionMapping>`] contains two `U+003C LESS-THAN SIGN`s or only one [`<Codepoint>`], and `false`, as an [`xsd:boolean`], otherwise.
 
-Finally, create a new [RDF triple] with <var>current character</var> as its subject, `kixt:decomposition` as its predicate, and <var>current sequence</var> as its object.
+Finally, create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:decomposition` as its predicate, and <var>current sequence</var> as its object.
 
 <div role="note" markdown="block">
-In [Turtle], the resulting [RDF graph] produced by the above steps will look something like the following:
+In [Turtle], the resulting [R·D·F graph] produced by the above steps will look something like the following:
 
 ```ttl
 [ ] kixt:decomposition [
@@ -1179,23 +1180,23 @@ AdditionalProperties =
 ```
 {: id="prod.AdditionalProperties"}
 
-An [`<AdditionalProperties>`] defines a number of additional properties on a `kixt:Character`; in order, these are: whether the character is deprecated, whether the character is fullwidth or proportional, whether the character conjoins with previous characters of a similar type, and whether the character is a combining character.
+An [`<AdditionalProperties>`] defines a number of additional properties on a `kixt:Character`; in order, these are whether the character is deprecated, whether the character is fullwidth or proportional, whether the character conjoins with previous characters of a similar type, and whether the character is a combining character.
 All of these elements are optional, but at least one must be present if the production is nonempty as a whole.
 [`<AdditionalProperties>`] begins with an `U+0026 AMPERSAND`.
 
 Upon reaching an [`<AdditionalProperties>`]:
 
-01. Create a new [RDF triple] with <var>current character</var> as its subject, `kixt:deprecated` as its predicate, and an object of `true`, as an [`xsd:boolean`], if [`<DecompositionMapping>`] contains [`<Deprecated>`], and `false`, as an [`xsd:boolean`], otherwise.
+01. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:deprecated` as its predicate, and an object of `true`, as an [`xsd:boolean`], if [`<DecompositionMapping>`] contains [`<Deprecated>`], and `false`, as an [`xsd:boolean`], otherwise.
 
-02. Create a new [RDF triple] with <var>current character</var> as its subject, `kixt:fullwidth` as its predicate, and an object of `YES`, as an [`xsd:string`], if [`<CharacterWidth>`] is `FULLWIDTH`; `NO`, as an [`xsd:string`], if [`<CharacterWidth>`] is `PROPORTIONAL`; and an empty [`xsd:string`] if [`<CharacterWidth>`] is not present.
+02. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:fullwidth` as its predicate, and an object of `YES`, as an [`xsd:string`], if [`<CharacterWidth>`] is `FULLWIDTH`; `NO`, as an [`xsd:string`], if [`<CharacterWidth>`] is `PROPORTIONAL`; and an empty [`xsd:string`] if [`<CharacterWidth>`] is not present.
 
-03. Create a new [RDF triple] with <var>current character</var> as its subject, `kixt:segments` as its predicate, and an object of `YES`, as an [`xsd:string`], if [`<SegmentationClass>`] is `DIVIDER`; `NO`, as an [`xsd:string`], if [`<SegmentationClass>`] is `EXTENDS`; and an empty [`xsd:string`], if [`<SegmentationClass>`] is not present.
+03. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:segments` as its predicate, and an object of `YES`, as an [`xsd:string`], if [`<SegmentationClass>`] is `DIVIDER`; `NO`, as an [`xsd:string`], if [`<SegmentationClass>`] is `EXTENDS`; and an empty [`xsd:string`], if [`<SegmentationClass>`] is not present.
 
-04. Create a new [RDF triple] with <var>current character</var> as its subject, `kixt:combiningClass` as its predicate, and the value of [`<Integer>`] in [`<Combines>`], if present, or `0`, otherwise, as its object, as an [`xsd:integer`].
+04. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:combiningClass` as its predicate, and the value of [`<Integer>`] in [`<Combines>`], if present, or `0`, otherwise, as its object, as an [`xsd:integer`].
 
-05. If [`<ConjoiningMode>`] is present (including within a [`<Conjoins>`]), create a new [RDF triple] with <var>current character</var> as its subject, `kixt:conjoiningMode` as its predicate, and the value  [`<ConjoiningMode>`] as its object, as an [IRI].
+05. If [`<ConjoiningMode>`] is present (including within a [`<Conjoins>`]), create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:conjoiningMode` as its predicate, and the value  [`<ConjoiningMode>`] as its object, as an [I·R·I].
 
-06. Create a new [RDF triple] with <var>current character</var> as its subject, `kixt:conjoiningClass` as its predicate, and the value of [`<Integer>`] in [`<Conjoins>`], if present, or `0`, otherwise, as its object, as an [`xsd:integer`].
+06. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:conjoiningClass` as its predicate, and the value of [`<Integer>`] in [`<Conjoins>`], if present, or `0`, otherwise, as its object, as an [`xsd:integer`].
 
 #### 3.9.6 References
 {: id="definition.character.references"}
@@ -1219,16 +1220,16 @@ It consists of one or more lines, each beginning with an `U+003E GREATER-THAN SI
 
 Upon reaching a [`<References>`], for each [`<Codepoint>`]:
 
-01. If there is already some subject [node], which is an object of the predicate `kixt:character` on the subject <var>current charset</var>, for whom the object of the predicate `kixt:codepoint` is the value of the current [`<Codepoint>`], set <var>current item</var> to that node.
-    Otherwise:
+01. If there is already some subject [node][R·D·F node], which is an object of the predicate `kixt:character` on the subject <var>current charset</var>, for whom the object of the predicate `kixt:codepoint` is the value of the current [`<Codepoint>`], set <var>current item</var> to that node.
+    Otherwise :—
 
-    01. Set <var>current item</var> to a new [blank node].
+    01. Set <var>current item</var> to a new [blank node][R·D·F blank node].
 
-    02. Create a new [RDF triple] with <var>current charset</var> as its subject, `kixt:character` as its predicate, and <var>current item</var> as its object.
+    02. Create a new [R·D·F triple] with <var>current charset</var> as its subject, `kixt:character` as its predicate, and <var>current item</var> as its object.
 
-    03. Create a new [RDF triple] with <var>current item</var> as its subject, `kixt:codepoint` as its predicate, and the value of [`<Codepoint>`], converted from hexadecimal, as its object, as an [`xsd:integer`].
+    03. Create a new [R·D·F triple] with <var>current item</var> as its subject, `kixt:codepoint` as its predicate, and the value of [`<Codepoint>`], converted from hexadecimal, as its object, as an [`xsd:integer`].
 
-02. Create a new [RDF triple] with <var>current character</var> as its subject, <code>kixt:compare</code> as its predicate, and <var>current item</var> as its object.
+02. Create a new [R·D·F triple] with <var>current character</var> as its subject, <code>kixt:compare</code> as its predicate, and <var>current item</var> as its object.
 
 #### 3.9.7 Glyphs
 {: id="definition.character.glyphs"}
@@ -1250,11 +1251,11 @@ Glyphs = 1*Glyph
 ```
 {: id="prod.Glyphs"}
 
-A [`<Glyphs>`] provides a lofi black-and-white representative glyphs for a `kixt:Character`.
+A [`<Glyphs>`] provides a lofi black & white representative glyphs for a `kixt:Character`.
 It consists of one or [`<Glyph>`]s, each beginning with a `U+0029 RIGHT PARENTHESIS` and consisting of one or more lines of binary data represented in hexadecimal.
 Each bit of this data represents a pixel, with `0` indicating the background colour and `1` the foreground, beginning from the starting (in both horizontal and vertical directions, and travelling in the direction of the writing mode) corner of the glyph.
 
-Upon reaching a [`<Glyphs>`], for each [`<Glyph>`], create a new [RDF triple] with <var>current character</var> as its subject, <code>kixt:representativeGlyph</code> as its predicate, and the value of [`<HexGlyph>`] as its object, as a [`xsd:hexBinary`] padded with additional terminal zeroes as necessary until the total length is even, and the total length times either four or eight is square.
+Upon reaching a [`<Glyphs>`], for each [`<Glyph>`], create a new [R·D·F triple] with <var>current character</var> as its subject, <code>kixt:representativeGlyph</code> as its predicate, and the value of [`<HexGlyph>`] as its object, as a [`xsd:hexBinary`] padded with additional terminal zeroes as necessary until the total length is even, and the total length times either four or eight is square.
 
 <div role="note" markdown="block">
 This effectively limits representative glyphs to having a height divisible by 4.
@@ -1262,7 +1263,7 @@ This effectively limits representative glyphs to having a height divisible by 4.
 
 ## 4. Conformance {#conformance}
 
-A [Kixt Charset Definition] is <dfn id="dfn.well-formed">well-formed</dfn> if it matches the [ABNF] syntax for [`<CharsetDefinition>`] defined by this specification.
+A [Kixt Charset Definition] is <dfn id="dfn.welformed">welformed</dfn> if it matches the [A·B·N·F] syntax for [`<CharsetDefinition>`] defined by this specification.
 Processors of Kixt Charset Definitions must fail to process any Kixt Charset Definition which is not well-formed.
 
 ### 4.1 Validity
@@ -1276,10 +1277,10 @@ In addition to the constraints made by the [ABNF] syntax, the following situatio
 
 03. A [`<Combines>`], [`<Conjoins>`], or [`<CharacterWidth>`] in a [`<CharacterDefinition>`] which does not have a [`<BasicType>`] of `SPACING` or `NONSPACING`.
 
-04. Assigning an object other than `https://vocab.KIBI.network/Kixt/#GENERIC` for the `kixt:compatibilityMode` predicate for a subject whose `kixt:compatibility` predicate has an object with one `kixt:slot` predicate whose object has one `kixt:item` predicate whose object is the subject itself.
+04. Assigning an object other than `https://spec.go.kibi.family/ns/kixt/#GENERIC` for the `kixt:compatibilityMode` predicate for a subject whose `kixt:compatibility` predicate has an object with one `kixt:slot` predicate whose object has one `kixt:item` predicate whose object is the subject itself.
 
     <div role="note" markdown="block">
-    In other words, if a [character] has a compatibility decomposition of itself, then it must have the default compatibility mode of `kixt:GENERIC`.
+    In other words, if a [character][Kixt character] has a compatibility decomposition of itself, then it must have the default compatibility mode of `kixt:GENERIC`.
     </div>
 
 05. Assigning the same value as the object of a `kixt:name` or `kixt:alias` predicate for two different subjects of the same `rdf:type` (`kixt:name` and `kixt:alias` must be unique within a shared namespace).
@@ -1296,11 +1297,11 @@ In addition to the constraints made by the [ABNF] syntax, the following situatio
     Another way of expressing this constraint is that every [`<Codepoint>`] in a [`<CompatibilityMapping>`], [`<DecompositionMapping>`], or [`<Reference>`] must identify a `kixt:Character` defined in the same document.
     </div>
 
-10. Creating a `kixt:Charset` which is not [variable-width compatible] but for which `kixt:variable` is `true`.
+10. Creating a `kixt:Charset` which is not [variable‐width‐compatible] but for which `kixt:variable` is `true`.
 
-A [Kixt Charset Definition] is <dfn id="dfn.valid">valid</dfn> if it is not [invalid][invalid definition].
+A [Kixt Charset Definition] is <dfn id="dfn.valid">valid</dfn> if it is not [invalid][Kixt invalid definition].
 
-The processing behaviours for an [invalid][invalid definition] [Kixt Charset Definition] are undefined.
+The processing behaviours for an [invalid][Kixt invalid definition] [Kixt Charset Definition] are undefined.
 
 ### 4.2 Compatibility
 {: id="conformance.compatibility"}
@@ -1314,19 +1315,19 @@ The following predicates are <dfn id="dfn.compatibility_property">compatibility 
 + `kixt:conjoiningMode` (if defined on a character)
 + `kixt:conjoiningClass`
 
-A [Kixt Charset Definition] is <dfn id="dfn.UTF-8_compatible">UTF-8 compatible</dfn> if it is [valid][valid definition] and does not assign any of the following codepoints:
+A [Kixt Charset Definition] is <dfn id="dfn.UTF-8-compatible">U·T·F‐8‐compatible</dfn> if it is [valid][Kixt valid definition] and does not assign any of the following codepoints:
 
 + `D800`–`DFFF`
 + `FEFF`
 + `FFFE`–`FFFF`
 
-A [Kixt Charset Definition] is <dfn id="dfn.null_compatible">null compatible</dfn> if it is [valid][valid definition] and the objects of the [compatibility properties][compatibility property] are equal to those defined in the following Kixt Charset Definition for all characters so defined:
+A [Kixt Charset Definition] is <dfn id="dfn.null-compatible">null‐compatible</dfn> if it is [valid][Kixt valid definition] and the objects of the [compatibility properties][Kixt compatibility property] are equal to those defined in the following Kixt Charset Definition for all characters so defined:
 
 ```kch
-;CHARSET<https://charset.KIBI.network/Kixt/Null>1.0
+;CHARSET<https://spec.go.kibi.family/-/kixt-charset/null>1.0
 
 % ASCII CONTROLS AND BASIC LATIN
-' <https://vocab.KIBI.network/Kixt/#COMMON>
+' <https://www.w3.org/ns/i18n#zyyy>
 
 U+0000
 ; 00 NULL (FORMAT)
@@ -1334,13 +1335,17 @@ U+0000
 * This is a meaningless format character which can be used for byte-padding when encoding texts
 ```
 
-A [Kixt Charset Definition] is <dfn id="dfn.ASCII_compatible">ASCII compatible</dfn> if it is [valid][valid definition] and the objects of the [compatibility properties][compatibility property] are equal to those defined in <https://charset.KIBI.network/Kixt/ASCII> for all characters so defined.
+A [Kixt Charset Definition] is <dfn id="dfn.ASCII-compatible">A·S·C·I·I‐compatible</dfn> if it is [valid][Kixt valid definition] and the objects of the [compatibility properties][Kixt compatibility property] are equal to those defined in <https://spec.go.kibi.family/-/kixt-charset/ascii> for all characters so defined.
 
 <div role="note" markdown="block">
-All [ASCII compatible]{::} [charsets][charset] are [null compatible].
+All [A·S·C·I·I‐compatible][A·S·C·I·I‐compatible character set] [charsets][Kixt charset] are [null‐compatible].
 </div>
 
 ## 5. Changelog {#changelog}
+
+{: id="changelog.2021-12-19"} <time>2021-12-19</time>
+
+: New U·R·L’s and minor revisions.
 
 {: id="changelog.2019-09-10"} <time>2019-09-10</time>
 
@@ -1350,21 +1355,21 @@ All [ASCII compatible]{::} [charsets][charset] are [null compatible].
 
 : Allowed the specification of other names and notes on charsets, blocks, and scripts, and aliases on blocks.
 
-: Added a variable-width promise (`kixt:supportsVariableEncoding`) to charset declarations.
+: Added a variable‐width promise (`kixt:supportsVariableEncoding`) to charset declarations.
 
 : The syntaxes for [`<Integer>`] and [`<InnerCommentLine>`] were improved.
 
 {: id="changelog.2019-05-03"} <time>2019-05-03</time>
 
-: Redefined a number of syntax components to make it possible to write a Kixt Charset Definition in any ECMA-6–compatible character set.
-  By extension, you can now write a Kixt Charset Definition in any [XML compatible] charset.
+: Redefined a number of syntax components to make it possible to write a Kixt Charset Definition in any ECMA‐6‐compatible character set.
+  By extension, you can now write a Kixt Charset Definition in any [X·M·L‐compatible character set].
   (This is a breaking change.)
 
-: Allowed [UTF-16]–encoded documents with the addition of a BOM.
+: Allowed [U·T·F‐16]–encoded documents with the addition of a B·O·M.
 
 : Required processors to ignore `U+0000 NULL` characters which appear in Kixt Charset Definition documents.
 
-: Removed compatibility definitions that are better-served in other specifications.
+: Removed compatibility definitions that are better‐served in other specifications.
 
 {: id="changelog.2019-05-02"} <time>2019-05-02</time>
 
