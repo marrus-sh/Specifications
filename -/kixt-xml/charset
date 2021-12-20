@@ -148,9 +148,9 @@ U+2C COMMA
 U+2D HYPHEN-MINUS
 ; 2D HYPHEN OPERATOR (SPACING)
 & PROPORTIONAL
+= HYHPEN MINUS
 * Typically smaller than minus
 * Placed on the mathematical centreline
-= HYHPEN MINUS
 ) 000000000700000000
 
 U+2E FULL STOP
