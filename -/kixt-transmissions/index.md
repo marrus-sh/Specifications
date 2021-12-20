@@ -166,7 +166,7 @@ Note that the specific usage of these characters will be clarified in later sect
 `1E CHAPTER SEPARATOR`
 `1F SECTION SEPARATOR`
 
-: [Format characters][Kixt format characters] for subdividing a sequence of characters into progressively finer-grained divisions.
+: [Format characters][Kixt format character] for subdividing a sequence of characters into progressively finer‐grained divisions.
   These have special semantics inside of [headers][Kixt header]; their usage in [texts][Kixt text] is not defined (but not prohibited) by this specification.
 
 `7F NOTHING`
@@ -271,7 +271,7 @@ Five possible encoding schemes are defined :—
 
   02. For all other characters, the codepoint a sequence two bytes, with the most‐significant byte first.
 
-  For all other character sets, outside of [texts][Kixt text], and inside [data blocks][Kixt data block], the same as [Fullwidth‐BE][Kixt Fullwidth‐BE].
+  For all other character sets, outside of [texts][Kixt text], and inside [data blocks][Kixt data block], the same as [Fullwidth‐B·E][Kixt Fullwidth‐B·E].
 
 <dfn id="dfn.Variable-LE">Variable‐L·E</dfn>
 : For [variable‐width‐compatible character sets][variable‐width‐compatible character set], each codepoint within the [text][Kixt text] of a [document][Kixt document] which is not in a [data block][Kixt data block] is represented as a sequence of either :—
@@ -280,7 +280,7 @@ Five possible encoding schemes are defined :—
 
   02. For all other characters, the codepoint a sequence two bytes, with the least‐significant byte first.
 
-  For all other character sets, outside of [texts][Kixt text], and inside [data blocks][Kixt data block], the same as [Fullwidth‐LE][Kixt Fullwidth‐LE].
+  For all other character sets, outside of [texts][Kixt text], and inside [data blocks][Kixt data block], the same as [Fullwidth‐L·E][Kixt Fullwidth‐L·E].
 
 <div role="note" markdown="block">
 For [transmission‐compatible character sets][transmission‐compatible character set], the `00` byte will always be the most significant byte.

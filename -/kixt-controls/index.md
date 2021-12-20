@@ -215,7 +215,7 @@ The <dfn id="dfn.media_type">media type</dfn> of an embed can optionally be prov
     Because they are in a [data block][Kixt data block], these characters are not interpreted as `0E LEAVE` and `0F RETURN` and thus are completely valid.
     </div>
 
-Immediately following the [media type], if present, or the opening `10 DATA` character, otherwise, must be a sequence of characters (including the closing `80C9 STRING FINISH`) which, when interpreted in the surrounding character set (i.e., that of the `10 DATA` character), form a [data string][Kixt data string].
+Immediately following the [media type][Kixt media type], if present, or the opening `10 DATA` character, otherwise, must be a sequence of characters (including the closing `80C9 STRING FINISH`) which, when interpreted in the surrounding character set (i.e., that of the `10 DATA` character), form a [data string][Kixt data string].
 The [string contents][Kixt string contents] of this data string are the [embed][Kixt embed]’s <dfn id="dfn.embedded_content">embedded content</dfn>.
 
 If the above requirements are not met, then the `10 DATA` character is invalid and does not begin a [data block][Kixt data block].
@@ -319,7 +319,7 @@ The following remaining [format characters][Kixt format character] are defined b
 `1D PART SEPARATOR`
 `1C FILE SEPARATOR`
 
-: These characters have special meanings in [headers][header], but otherwise are simply progressively higher‐level textual divisions for breaking up a [page][Kixt page].
+: These characters have special meanings in [headers][Kixt header], but otherwise are simply progressively higher‐level textual divisions for breaking up a [page][Kixt page].
 
 ### 6.2. Spacing and Segmentation
 {: id="format.segmentation"}

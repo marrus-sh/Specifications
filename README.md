@@ -40,9 +40,9 @@ Although [Unicode] generally provides an extensive and well‐supported means of
 
 : Defines the [Kixt controls], for use communicating with Kixt programs.
 
-[Kixt XML]
+[Kixt X·M·L]
 
-: Defines the [Kixt XML document] format for using [Kixt charsets] with XML.
+: Defines the [Kixt X·M·L document] format for using [Kixt charsets][Kixt charset] with [X·M·L].
 
 ## 3. Changelog {#changelog}
 

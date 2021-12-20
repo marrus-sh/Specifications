@@ -33,7 +33,7 @@ It is also built upon [X·M·L] and [R·D·F] technologies.
 
 ## 2. Character sets {#character}
 
-A [Kixt Charset Definition] is <dfn id="dfn.XML-compatible">X·M·L‐compatible</dfn> if it is [U·T·F‐8 compatible][U·T·F‐8 compatible character set] and the objects of the [compatibility properties][Kixt compatibility property] are equal to those defined in <https://spec.go.kibi.family/-/kixt-xml/charset> for all characters so defined.
+A [Kixt Charset Definition] is <dfn id="dfn.XML-compatible">X·M·L‐compatible</dfn> if it is [U·T·F‐8 compatible][U·T·F‐8‐compatible character set] and the objects of the [compatibility properties][Kixt compatibility property] are equal to those defined in <https://spec.go.kibi.family/-/kixt-xml/charset> for all characters so defined.
 
 The [Unicode] character set, as well as the A·S·C·I·I subset thereof, is assumed to be [X·M·L compatible][X·M·L‐compatible character set].
 Whether other character sets are X·M·L compatible is left undefined by this specification.

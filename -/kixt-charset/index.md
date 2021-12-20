@@ -482,7 +482,7 @@ URI-sub-delims = %x21 / %x24 / %x26-2C / %x3B / %x3D
 ```
 {: id="prod.URI-sub-delims"}
 
-[IRI]s must be [`<IRI>`]s as defined by [R·F·C 3987], from which the above productions were taken.
+[I·R·I]s must be [`<IRI>`]s as defined by [R·F·C 3987], from which the above productions were taken.
 
 ```abnf
 NonEmptyString = NoSpace *([Space] NoSpace)
@@ -1269,7 +1269,7 @@ Processors of Kixt Charset Definitions must fail to process any Kixt Charset Def
 ### 4.1 Validity
 {: id="conformance.validity"}
 
-In addition to the constraints made by the [ABNF] syntax, the following situations are all semantically <dfn id="dfn.invalid">invalid</dfn> in a [Kixt Charset Definition]:
+In addition to the constraints made by the [A·B·N·F] syntax, the following situations are all semantically <dfn id="dfn.invalid">invalid</dfn> in a [Kixt Charset Definition]:
 
 01. Two or more [`<BlockDeclaration>`]s with identical [`<Name>`]s, when both are not `NO BLOCK`.
 
@@ -1297,7 +1297,7 @@ In addition to the constraints made by the [ABNF] syntax, the following situatio
     Another way of expressing this constraint is that every [`<Codepoint>`] in a [`<CompatibilityMapping>`], [`<DecompositionMapping>`], or [`<Reference>`] must identify a `kixt:Character` defined in the same document.
     </div>
 
-10. Creating a `kixt:Charset` which is not [variable‐width‐compatible] but for which `kixt:variable` is `true`.
+10. Creating a `kixt:Charset` which is not [variable‐width‐compatible][variable‐width‐compatible character set] but for which `kixt:variable` is `true`.
 
 A [Kixt Charset Definition] is <dfn id="dfn.valid">valid</dfn> if it is not [invalid][Kixt invalid definition].
 
@@ -1338,7 +1338,7 @@ U+0000
 A [Kixt Charset Definition] is <dfn id="dfn.ASCII-compatible">A·S·C·I·I‐compatible</dfn> if it is [valid][Kixt valid definition] and the objects of the [compatibility properties][Kixt compatibility property] are equal to those defined in <https://spec.go.kibi.family/-/kixt-charset/ascii> for all characters so defined.
 
 <div role="note" markdown="block">
-All [A·S·C·I·I‐compatible][A·S·C·I·I‐compatible character set] [charsets][Kixt charset] are [null‐compatible].
+All [A·S·C·I·I‐compatible][A·S·C·I·I‐compatible character set] [charsets][Kixt charset] are [null compatible][null‐compatible character set].
 </div>
 
 ## 5. Changelog {#changelog}
