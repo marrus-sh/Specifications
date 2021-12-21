@@ -1135,8 +1135,6 @@ CharacterWidth =
 SegmentationClass =
 	%x45.58.54.45.4E.44.53
 		; `EXTENDS`
-	/ %x44.49.56.49.44.45.53
-		; `DIVIDER`
 ```
 {: id="prod.SegmentationClass"}
 ```abnf
@@ -1190,7 +1188,7 @@ Upon reaching an [`<AdditionalProperties>`]:
 
 02. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:fullwidth` as its predicate, and an object of `YES`, as an [`xsd:string`], if [`<CharacterWidth>`] is `FULLWIDTH`; `NO`, as an [`xsd:string`], if [`<CharacterWidth>`] is `PROPORTIONAL`; and an empty [`xsd:string`] if [`<CharacterWidth>`] is not present.
 
-03. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:segments` as its predicate, and an object of `YES`, as an [`xsd:string`], if [`<SegmentationClass>`] is `DIVIDER`; `NO`, as an [`xsd:string`], if [`<SegmentationClass>`] is `EXTENDS`; and an empty [`xsd:string`], if [`<SegmentationClass>`] is not present.
+03. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:extends` as its predicate, and an object of `true`, as an [`xsd:boolean`], if [`<Combines>`] is present, and `false`, as an [`xsd:boolean`], otherwise.
 
 04. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:combiningClass` as its predicate, and the value of [`<Integer>`] in [`<Combines>`], if present, or `0`, otherwise, as its object, as an [`xsd:integer`].
 
@@ -1277,27 +1275,29 @@ In addition to the constraints made by the [A·B·N·F] syntax, the following si
 
 03. A [`<Combines>`], [`<Conjoins>`], or [`<CharacterWidth>`] in a [`<CharacterDefinition>`] which does not have a [`<BasicType>`] of `SPACING` or `NONSPACING`.
 
-04. Assigning an object other than `https://spec.go.kibi.family/ns/kixt/#GENERIC` for the `kixt:compatibilityMode` predicate for a subject whose `kixt:compatibility` predicate has an object with one `kixt:slot` predicate whose object has one `kixt:item` predicate whose object is the subject itself.
+04. Assigning an object other than `0` for the `kixt:combiningClass` predicate for a subject whose `kixt:extends` predicate is not `true` or whose `kixt:basicType` predicate is not `kixt:NONSPACING`.
+
+05. Assigning an object other than `https://spec.go.kibi.family/ns/kixt/#GENERIC` for the `kixt:compatibilityMode` predicate for a subject whose `kixt:compatibility` predicate has an object with one `kixt:slot` predicate whose object has one `kixt:item` predicate whose object is the subject itself.
 
     <div role="note" markdown="block">
     In other words, if a [character][Kixt character] has a compatibility decomposition of itself, then it must have the default compatibility mode of `kixt:GENERIC`.
     </div>
 
-05. Assigning the same value as the object of a `kixt:name` or `kixt:alias` predicate for two different subjects of the same `rdf:type` (`kixt:name` and `kixt:alias` must be unique within a shared namespace).
+06. Assigning the same value as the object of a `kixt:name` or `kixt:alias` predicate for two different subjects of the same `rdf:type` (`kixt:name` and `kixt:alias` must be unique within a shared namespace).
 
-06. Assigning `kixt:INHERITED` as the object of a `kixt:script` predicate while processing a [`<CharacterDefinition>`] which does not contain a [`<Combines>`].
+07. Assigning `i18n:zinh` as the object of a `kixt:script` predicate while processing a [`<CharacterDefinition>`] which does not contain a [`<Combines>`].
 
-07. Assigning the same object for a `kixt:codepoint` predicate while processing two different [`<CharacterInfo>`]s.
+08. Assigning the same object for a `kixt:codepoint` predicate while processing two different [`<CharacterInfo>`]s.
 
-08. Assigning the multiple objects with the same length for a `kixt:representativeGlyph` predicate for a single subject.
+09. Assigning the multiple objects with the same length for a `kixt:representativeGlyph` predicate for a single subject.
 
-09. Finishing processing the [Kixt Charset Definition] when not every `kixt:character` predicate with a subject of <var>current charset</var> has an object for which a `kixt:basicType` predicate has been assigned.
+10. Finishing processing the [Kixt Charset Definition] when not every `kixt:character` predicate with a subject of <var>current charset</var> has an object for which a `kixt:basicType` predicate has been assigned.
 
     <div role="note" markdown="block">
     Another way of expressing this constraint is that every [`<Codepoint>`] in a [`<CompatibilityMapping>`], [`<DecompositionMapping>`], or [`<Reference>`] must identify a `kixt:Character` defined in the same document.
     </div>
 
-10. Creating a `kixt:Charset` which is not [variable‐width‐compatible][variable‐width‐compatible character set] but for which `kixt:variable` is `true`.
+11. Creating a `kixt:Charset` which is not [variable‐width‐compatible][variable‐width‐compatible character set] but for which `kixt:variable` is `true`.
 
 A [Kixt Charset Definition] is <dfn id="dfn.valid">valid</dfn> if it is not [invalid][Kixt invalid definition].
 
@@ -1310,7 +1310,7 @@ The following predicates are <dfn id="dfn.compatibility_property">compatibility 
 
 + `kixt:unicode`
 + `kixt:basicType`
-+ `kixt:segments`
++ `kixt:extends`
 + `kixt:combiningClass`
 + `kixt:conjoiningMode` (if defined on a character)
 + `kixt:conjoiningClass`
@@ -1342,6 +1342,11 @@ All [A·S·C·I·I‐compatible][A·S·C·I·I‐compatible character set] [char
 </div>
 
 ## 5. Changelog {#changelog}
+
+{: id="changelog.2021-12-20"} <time>2021-12-20</time>
+
+: Removed `DIVIDER` as a [`<SegmentationClass>`] and replaced `kixt:segments` with `kixt:extends`.
+    Required characters with a nonzero `kixt:combiningClass` to be nonspacing.
 
 {: id="changelog.2021-12-19"} <time>2021-12-19</time>
 
