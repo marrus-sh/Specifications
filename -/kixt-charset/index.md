@@ -855,6 +855,7 @@ Upon reaching a [`<ScriptIdentifier>`], set <var>current script</var> to [`<IRI>
 CharacterDefinition =
 	UnicodeMapping
 	CharacterInfo
+	LinebreakProperties
 	CompatibilityMapping
 	DecompositionMapping
 	AdditionalProperties
@@ -985,14 +986,64 @@ Upon reaching a [`<CharacterInfo>`], perform the following steps:
     Note that this is a [literal][R·D·F literal] with a [datatype I·R·I][R·D·F datatype I·R·I] of [`xsd:anyURI`], *not* an [R·D·F I·R·I][I·R·I].
     </div>
 
-#### 3.9.3 Compatibility mapping
+#### 3.9.3 Linebreak properties
+{: id="definition.character.linebreak"}
+
+```abnf
+LinebreakClass =
+	%x53.45.50.41.52.41.42.4C.45
+		; `SEPARABLE`
+	/ %x49.4E.53.45.50.41.52.41.42.4C.45
+		; `INSEPARABLE`
+	/ %x42.52.45.41.4B
+		; `BREAK`
+	/ %x4A.4F.49.4E
+		; `JOIN`
+```
+{: id="prod.LinebreakClass"}
+```abnf
+LinebreakProperties =
+	[
+		*Space %x3A
+		*Space Name
+		[*Space %x28 LinebreakClass [1*Space LinebreakClass] %x29]
+		*Space Break
+		*SingleLineComment
+	]
+```
+{: id="prod.LinebreakProperties"}
+
+A [`<LinebreakProperties>`] defines the linebreaking behaviour of a `kixt:Character`.
+It begins with a `U+003A COLON`, followed by a [`<Name>`] specifying the linebreak category, and optionally followed by one or two [`<LinebreakClass>`]es, in parentheses, to override the default linebreaking behavior for the character.
+
+Upon reaching a [`<LinebreakProperties>`], perform the following steps:
+
+01. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:linebreakCategory` as its predicate, and the value of [`<Name>`] as its object, as an [`xsd:string`].
+
+02. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:breakBefore` as its predicate, and the value of either the first [`<LinebreakClass>`], if one is defined, or `JOIN`, in either case appended to the end of the string `https://spec.go.kibi.family/ns/kixt/#`, as its object, as an [`xsd:anyURI`].
+
+    <div role="note" markdown="block">
+    Note that this is a [literal][R·D·F literal] with a [datatype I·R·I][R·D·F datatype I·R·I] of [`xsd:anyURI`], *not* an [R·D·F I·R·I][I·R·I].
+    </div>
+
+03. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:breakAfter` as its predicate, and the value of either the last [`<LinebreakClass>`], if one is defined, or `INSEPARABLE`, in either case appended to the end of the string `https://spec.go.kibi.family/ns/kixt/#`, as its object, as an [`xsd:anyURI`].
+
+    <div role="note" markdown="block">
+    Note that this is a [literal][R·D·F literal] with a [datatype I·R·I][R·D·F datatype I·R·I] of [`xsd:anyURI`], *not* an [R·D·F I·R·I][I·R·I].
+    </div>
+
+    <div role="note" markdown="block">
+    If only one [`<LinebreakClass>`] is defined, `kixt:breakBefore` and `kixt:breakAfter` will have the same value for their objects.
+    </div>
+
+#### 3.9.4 Compatibility mapping
 {: id="definition.character.compatibility"}
 
 ```abnf
 CompatibilityMapping =
 	[
 		*Space %x28
-		*Space [%x3C IRI %x3E]
+		[*Space %x3C IRI %x3E]
 		*Space Codepoint
 		*(1*Space Codepoint)
 		*Space Break
@@ -1046,7 +1097,7 @@ In [Turtle], the resulting [R·D·F graph] produced by the above steps will look
 ```
 </div>
 
-#### 3.9.4 Decomposition mapping
+#### 3.9.5 Decomposition mapping
 {: id="definition.character.decomposition"}
 
 ```abnf
@@ -1115,7 +1166,7 @@ In [Turtle], the resulting [R·D·F graph] produced by the above steps will look
 ```
 </div>
 
-#### 3.9.5 Additional properties
+#### 3.9.6 Additional properties
 {: id="definition.character.additional"}
 
 ```abnf
@@ -1196,7 +1247,7 @@ Upon reaching an [`<AdditionalProperties>`]:
 
 06. Create a new [R·D·F triple] with <var>current character</var> as its subject, `kixt:conjoiningClass` as its predicate, and the value of [`<Integer>`] in [`<Conjoins>`], if present, or `0`, otherwise, as its object, as an [`xsd:integer`].
 
-#### 3.9.6 References
+#### 3.9.7 References
 {: id="definition.character.references"}
 
 ```abnf
@@ -1229,7 +1280,7 @@ Upon reaching a [`<References>`], for each [`<Codepoint>`]:
 
 02. Create a new [R·D·F triple] with <var>current character</var> as its subject, <code>kixt:compare</code> as its predicate, and <var>current item</var> as its object.
 
-#### 3.9.7 Glyphs
+#### 3.9.8 Glyphs
 {: id="definition.character.glyphs"}
 
 ```abnf
@@ -1273,31 +1324,33 @@ In addition to the constraints made by the [A·B·N·F] syntax, the following si
 
 02. An [`<Aliases>`], [`<OtherNames>`], or [`<Notes>`] in a [`<BlockDeclaration>`] whose [`<Name>`] is `NO BLOCK`.
 
-03. A [`<Combines>`], [`<Conjoins>`], or [`<CharacterWidth>`] in a [`<CharacterDefinition>`] which does not have a [`<BasicType>`] of `SPACING` or `NONSPACING`.
+03. A [`<LinebreakProperties>`] in a [`<CharacterDefinition>`] which does not have a [`<BasicType>`] of `SPACING`.
 
-04. Assigning an object other than `0` for the `kixt:combiningClass` predicate for a subject whose `kixt:extends` predicate is not `true` or whose `kixt:basicType` predicate is not `kixt:NONSPACING`.
+04. A [`<Combines>`], [`<Conjoins>`], or [`<CharacterWidth>`] in a [`<CharacterDefinition>`] which does not have a [`<BasicType>`] of `SPACING` or `NONSPACING`.
 
-05. Assigning an object other than `https://spec.go.kibi.family/ns/kixt/#GENERIC` for the `kixt:compatibilityMode` predicate for a subject whose `kixt:compatibility` predicate has an object with one `kixt:slot` predicate whose object has one `kixt:item` predicate whose object is the subject itself.
+05. Assigning an object other than `0` for the `kixt:combiningClass` predicate for a subject whose `kixt:extends` predicate is not `true` or whose `kixt:basicType` predicate is not `kixt:NONSPACING`.
+
+06. Assigning an object other than `https://spec.go.kibi.family/ns/kixt/#GENERIC` for the `kixt:compatibilityMode` predicate for a subject whose `kixt:compatibility` predicate has an object with one `kixt:slot` predicate whose object has one `kixt:item` predicate whose object is the subject itself.
 
     <div role="note" markdown="block">
     In other words, if a [character][Kixt character] has a compatibility decomposition of itself, then it must have the default compatibility mode of `kixt:GENERIC`.
     </div>
 
-06. Assigning the same value as the object of a `kixt:name` or `kixt:alias` predicate for two different subjects of the same `rdf:type` (`kixt:name` and `kixt:alias` must be unique within a shared namespace).
+07. Assigning the same value as the object of a `kixt:name` or `kixt:alias` predicate for two different subjects of the same `rdf:type` (`kixt:name` and `kixt:alias` must be unique within a shared namespace).
 
-07. Assigning `i18n:zinh` as the object of a `kixt:script` predicate while processing a [`<CharacterDefinition>`] which does not contain a [`<Combines>`].
+08. Assigning `i18n:zinh` as the object of a `kixt:script` predicate while processing a [`<CharacterDefinition>`] which does not contain a [`<Combines>`].
 
-08. Assigning the same object for a `kixt:codepoint` predicate while processing two different [`<CharacterInfo>`]s.
+09. Assigning the same object for a `kixt:codepoint` predicate while processing two different [`<CharacterInfo>`]s.
 
-09. Assigning the multiple objects with the same length for a `kixt:representativeGlyph` predicate for a single subject.
+10. Assigning the multiple objects with the same length for a `kixt:representativeGlyph` predicate for a single subject.
 
-10. Finishing processing the [Kixt Charset Definition] when not every `kixt:character` predicate with a subject of <var>current charset</var> has an object for which a `kixt:basicType` predicate has been assigned.
+11. Finishing processing the [Kixt Charset Definition] when not every `kixt:character` predicate with a subject of <var>current charset</var> has an object for which a `kixt:basicType` predicate has been assigned.
 
     <div role="note" markdown="block">
     Another way of expressing this constraint is that every [`<Codepoint>`] in a [`<CompatibilityMapping>`], [`<DecompositionMapping>`], or [`<Reference>`] must identify a `kixt:Character` defined in the same document.
     </div>
 
-11. Creating a `kixt:Charset` which is not [variable‐width‐compatible][variable‐width‐compatible character set] but for which `kixt:variable` is `true`.
+12. Creating a `kixt:Charset` which is not [variable‐width‐compatible][variable‐width‐compatible character set] but for which `kixt:variable` is `true`.
 
 A [Kixt Charset Definition] is <dfn id="dfn.valid">valid</dfn> if it is not [invalid][Kixt invalid definition].
 
@@ -1342,6 +1395,10 @@ All [A·S·C·I·I‐compatible][A·S·C·I·I‐compatible character set] [char
 </div>
 
 ## 5. Changelog {#changelog}
+
+{: id="changelog.2022-03-26"} <time>2022-03-26</time>
+
+: Added [`<LinebreakProperties>`].
 
 {: id="changelog.2021-12-20"} <time>2021-12-20</time>
 

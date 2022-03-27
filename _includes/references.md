@@ -234,6 +234,8 @@
 [`<UnicodeMapping>`]: <{{ "/-/kixt-charset/#prod.UnicodeMapping" | absolute_url }}>
 [`<BasicType>`]: <{{ "/-/kixt-charset/#prod.BasicType" | absolute_url }}>
 [`<CharacterInfo>`]: <{{ "/-/kixt-charset/#prod.CharacterInfo" | absolute_url }}>
+[`<LinebreakClass>`]: <{{ "/-/kixt-charset/#prod.LinebreakClass" | absolute_url }}>
+[`<LinebreakProperties>`]: <{{ "/-/kixt-charset/#prod.LinebreakProperties" | absolute_url }}>
 [`<CompatibilityMapping>`]: <{{ "/-/kixt-charset/#prod.CompatibilityMapping" | absolute_url }}>
 [`<DecompositionMapping>`]: <{{ "/-/kixt-charset/#prod.DecompositionMapping" | absolute_url }}>
 [`<Deprecated>`]: <{{ "/-/kixt-charset/#prod.Deprecated" | absolute_url }}>
